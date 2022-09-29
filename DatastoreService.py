@@ -1,7 +1,7 @@
 ## Gameknight-Bit's .json Datastore! ##
 
 ####### Version Notes ########
-VERSION = "beta_0.1"
+VERSION = "beta_0.2"
 # - Released!
 # - May be bugs!
 # - Make sure to stay updated on documentation with the github page!
@@ -109,7 +109,7 @@ class Datastore:
             return None
         with open(self.Path, "r+") as f:
             data = json.load(f)
-            data["Version"] = cleanValues(ver)
+            data["VersionDatastore111"] = cleanValues(ver)
             f.seek(0)
             json.dump(data, f, indent=INDENT_SPACING)
             f.truncate()
@@ -125,6 +125,17 @@ class Datastore:
         with open(self.Path, "r+") as f:
             data = json.load(f)
             return data.keys()
+
+    #Returns ALL Datastore Values
+    def GetValues(self):
+        with open(self.Path, "r+") as f:
+            data = json.load(f)
+            return data.values()
+
+    #Returns ENTIRE Datastore as raw dictionary
+    def GetAsDict(self):
+        with open(self.Path, "r+") as f:
+            return json.load(f)
 
 ################# Functions #################
 # Parameters: name = Your datastore's name (will create .json file named: YOUR_DATASTORE_NAME.json)
