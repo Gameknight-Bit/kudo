@@ -116,9 +116,21 @@ def login():
                 session['loggedin'] = True
                 session['id'] = acc.UserId
                 session['username'] = acc.Username
-                session['lastlogin'] = time.time()
+                session['lastupdate'] = int(time.time())
             else:
                 message = "Incorrect password or username"
     elif request.method == "POST":
         message = "Please fill out the form!"
     return render_template('login.html', msg=message)
+
+@app.route("/api/logout/")
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    session.pop('lastupdate', None)
+
+    return redirect(url_for('login'))
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True) #change when deploying :)!

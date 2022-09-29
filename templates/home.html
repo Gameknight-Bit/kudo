@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <title>WSHS Youth Basketball</title>
+    <title>PBIS System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 
 <body>
@@ -22,16 +22,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='imgs/Logo.png') }}"></a>
+                <a class="navbar-brand" href="/"><img src=""></a>
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="/about">About</a></li>
-                    <li><a href="/order-page">Register</a></li>
+                    <li><a href="/leaderboard">Leaderboards</a></li>
+                    <li><a href="/classes">Classes</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://wshs.asd.k12.pa.us/"><span class="glyphicon glyphicon-log-in"></span> <u>West Shamokin</u></a></li>
+                    <li><a href="/api/login"><span class="glyphicon glyphicon-log-in"></span> <u>Login</u></a></li>
                 </ul>
             </div>
         </div>
@@ -39,9 +40,9 @@
 
     <section id="intro">
         <div class="intro-text">
-            <h1>WSHS Youth Basketball</h1>
+            <h1>WSHS Kudos</h1>
             <hr class="bar">
-            <a href="/order-page" class="btn-get-started scrollto">Sign Up!</a>
+            <a href="/order-page" class="btn-get-started scrollto">Start Now!</a>
         </div>
     </section>
 

@@ -143,11 +143,11 @@ class Datastore:
 def NewDatastore(name):
     name = cleanName(name)
     try:
-        assert(exists(DATASTORE_PATH+"/"+name), "Datastore key provided is already in use! Try a different name other than '"+name+"'")
+        assert(exists(DATASTORE_PATH+"/"+name+".json"), "Datastore key provided is already in use! Try a different name other than '"+name+"'")
     except Exception as e:
         print(e)
         return
-    with open(DATASTORE_PATH+"/"+name, "r+") as f:
+    with open(DATASTORE_PATH+"/"+name+".json", "r+") as f:
         f.seek(0)
         json.dump({}, f, ensure_ascii=False, indent=INDENT_SPACING) #inits file with {}
         f.truncate()
@@ -157,7 +157,7 @@ def NewDatastore(name):
 # Returns Datastore obj
 def GetDatastore(name): #Safer Version of NewDatastore
     name = cleanName(name)
-    if exists(DATASTORE_PATH+"/"+name):
+    if exists(DATASTORE_PATH+"/"+name+".json"):
         return Datastore(name)
     else:
         return NewDatastore(name)
