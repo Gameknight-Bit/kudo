@@ -1,0 +1,14 @@
+Some good websites to look at while creating the app...
+
+Localstorage use on JavaScript
+https://blog.logrocket.com/localstorage-javascript-complete-guide/
+
+Cookie based Auth:
+https://www.loginradius.com/blog/engineering/cookie-based-vs-cookieless-authentication/#:~:text=The%20entire%20cookie%2Dbased%20authentication,by%20querying%20the%20user%20data.
+
+Auth Tutorial w/ Flask:
+https://codesnnippets.com/creating-authentication-system-with-flask-sessions-and-cookies-part-2-web-development-with-python-and-flask-part-8/
+
+FlaskWTF Docs:
+https://flask-wtf.readthedocs.io/en/1.0.x/
+
