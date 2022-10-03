@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} - Kudos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+    
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="containder-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/"><img src=""></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li {% block home %}{% endblock %}><a href="/">Home</a></li>
+                    <li {% block about %}{% endblock %}><a href="/about">About</a></li>
+                    <li {% block leaderboard %}{% endblock %}><a href="/leaderboard">Leaderboards</a></li>
+                    {% if session.loggedin %}
+                    <li {% block class %}{% endblock %}><a href="/classes">Classes</a></li>
+                    {% endif %}
+                </ul>
+                {% if not session.loggedin %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/api/login"><span class="glyphicon glyphicon-log-in"></span> <u>Login</u></a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% block content %} {% endblock %}
+
+</body>
