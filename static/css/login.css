@@ -1,0 +1,24 @@
+#LoginForm {
+    margin-top: 50px;
+    margin-left: 10vh;
+    margin-right: 10vh;
+    margin-bottom: 70px;
+}
+
+h4.card-title{
+    font-size: 2em;
+    margin-bottom: 7px;
+}
+
+.card-header p{
+    margin-bottom: 0;
+}
+
+#LoginForm .cardBody{
+    justify-content: left;
+}
+
+#loginCardForm .mainCard{
+    padding: 20px 20px 20px 20px;
+}
+

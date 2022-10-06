@@ -1,0 +1,15 @@
+/* Hr Elements */
+
+hr {
+    max-width: auto;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+hr.short{
+    border-top: 2px solid #3b3b3b;
+    width: 20%;
+}
+
+
+/*align*/

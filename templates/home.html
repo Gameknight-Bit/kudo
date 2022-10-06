@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 
-{% home block %}class="active"{% endblock %}
-{% about block %} {% endblock %}
-{% leaderboard block %} {% endblock %}
+{% block home %}class="active"{% endblock %}
+{% block about %} {% endblock %}
+{% block leaderboard %} {% endblock %}
 
 {% block content %}
 <section id="intro">
