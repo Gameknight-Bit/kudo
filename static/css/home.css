@@ -11,5 +11,57 @@ hr.short{
     width: 20%;
 }
 
+/* a tag */
+a {
+    transition: 0.2s;
+}
+
+/* unvisited link */
+a:link {
+    color: rgb(38, 139, 255);
+}
+  
+/* visited link */
+a:visited {
+    color: rgb(0, 166, 207);
+    text-decoration: underline;
+}
+  
+/* mouse over link */
+a:hover {
+    color: rgb(0, 81, 187);
+}
+  
+/* selected link */
+a:active {
+    color: rgb(150, 150, 150);
+}
+
+/* Alert Boxes */
+/* The alert message box */
+.alert {
+    margin: 10px 10px 20px 20px;
+    padding: 20px;
+    background-color: #f44336; /* Red */
+    color: white;
+    margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+  
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: rgb(160, 160, 160);
+}
 
 /*align*/

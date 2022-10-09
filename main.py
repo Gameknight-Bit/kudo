@@ -95,9 +95,14 @@ def register():
 @app.route("/api/login/", methods=["GET", "POST"]) #Login
 def login():
     message = ''
+    print(request.form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
+
+        if username == "" or password == "":
+            message = "Please fill out the form!"
+            return render_template('login.html', msg=message)
 
         acc = None
 
@@ -121,6 +126,8 @@ def login():
                 message = "Incorrect password or username"
     elif request.method == "POST":
         message = "Please fill out the form!"
+
+    print(message)
     return render_template('login.html', msg=message)
 
 @app.route("/api/logout/")
