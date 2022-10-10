@@ -91,6 +91,11 @@ def register():
 
     return render_template('register.html', msg=message)
 
+@app.route("/api/confirmation/", methods=["GET", "POST"])
+def confirm(): #Confirmation code enter
+    message = ""
+    if request.method == 'POST' and 'numbers1' in request.form:
+        numbers = [request.form['numbers1'], request.form['numbers2'], request.form['numbers3'], request.form['numbers4'], request.form['numbers5'], request.form['numbers6']]
 
 @app.route("/api/login/", methods=["GET", "POST"]) #Login
 def login():
