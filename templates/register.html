@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Register - Kudos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+    
+<body>
+
+    {% if msg != '' %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <i>{{ msg }}</i>
+        </div>
+    {% endif %}
+    <section id="LoginForm">
+        <div class="card text-left">
+            <div class="card-header">
+                <p><b><u>Kudos.SYS</u></b></p>
+            </div>
+            <form id="loginCardForm" method="POST">
+                <div class="mainCard">
+                    <h4 class="card-title">Register</h4>
+                    <hr class="short">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" value="{{ request.form['email'] }}" placeholder="Enter email-address">
+                            <small id="emailHelp" class="form-text text-muted">If you are part of the "Armstrong School District", use your school-provided e-mail.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Name:</label>
+                            <input type="username" class="form-control" id="username" name="username" aria-describedby="usernameHelp" value="{{ request.form['username'] }}" placeholder="Enter your name (or nickname)">
+                            <small id="usernameHelp" class="form-text text-muted">This username will be shown to others.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="userid">User-Id:</label>
+                            <input type="userid" class="form-control" id="userid" name="userid" aria-describedby="useridHelp" value="{{ request.form['userid'] }}" placeholder="Enter a User-Id">
+                            <small id="useridHelp" class="form-text text-muted">If you are using a <b>School E-Mail</b>, this UserId will be overwritten by your Student ID.</small>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="pasword">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
+
+                            <label for="paswordCheck">Confirm Password:</label>
+                            <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" value="" placeholder="Password">
+                            <small id="passwordHelp" class="form-text text-muted">Passwords with the length 8-12 with symbols and numbers are the most secure.</small>
+
+                            <hr>
+
+                            <p class="text-muted">Have an account? <a href="/api/register"><u>Login</u></a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success">Login</a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+    //Short script for showing/hiding password (easy :))
+    
+    function myFunction() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+    </script>
+
+</body>

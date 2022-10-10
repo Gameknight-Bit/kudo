@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>PBIS System</title>
+    <title>Login - Kudos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- Bootstrap CSS -->
@@ -17,10 +17,16 @@
     
 <body>
 
+    {% if msg != '' %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <i>{{ msg }}</i>
+        </div>
+    {% endif %}
     <section id="LoginForm">
         <div class="card text-left">
             <div class="card-header">
-                <p><b><u>Login Form</u></b></p>
+                <p><b><u>Kudos.SYS</u></b></p>
             </div>
             <form id="loginCardForm" method="POST">
                 <div class="mainCard">
@@ -29,18 +35,20 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="username">Username:</label>
-                            <input type="email" class="form-control" id="username" aria-describedby="userHelp" placeholder="Enter username or email-address">
+                            <input type="user" class="form-control" id="username" name="username" aria-describedby="userHelp" value="{{ request.form['username'] }}" placeholder="Enter username or email-address">
                             <small id="userHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
                         <div class="form-group">
                             <label for="pasword">Password:</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
                             <div class="form-check">
                                 <input onclick="myFunction()" class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
                                 <label class="form-check-label" for="flexCheckChecked">
                                     Show Password
                                 </label>
-                              </div>
+                            </div>
+                            <p class="text-muted"><a href="/api/register"><u>Create an Account</u></a></p>
+                            <p class="text-muted"><a href="/api/forgot-password">Forgot Password?</a></p>
                         </div>
                     </div>
                 </div>
