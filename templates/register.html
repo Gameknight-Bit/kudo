@@ -34,21 +34,32 @@
                     <hr class="short">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="username">Email:</label>
-                            <input type="user" class="form-control" id="username" name="username" aria-describedby="userHelp" value="{{ request.form['username'] }}" placeholder="Enter username or email-address">
-                            <small id="userHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                            <label for="email">E-mail:</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" value="{{ request.form['email'] }}" placeholder="Enter email-address">
+                            <small id="emailHelp" class="form-text text-muted">If you are part of the "Armstrong School District", use your school-provided e-mail.</small>
                         </div>
+                        <div class="form-group">
+                            <label for="username">Name:</label>
+                            <input type="username" class="form-control" id="username" name="username" aria-describedby="usernameHelp" value="{{ request.form['username'] }}" placeholder="Enter your name (or nickname)">
+                            <small id="usernameHelp" class="form-text text-muted">This username will be shown to others.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="userid">User-Id:</label>
+                            <input type="userid" class="form-control" id="userid" name="userid" aria-describedby="useridHelp" value="{{ request.form['userid'] }}" placeholder="Enter a User-Id">
+                            <small id="useridHelp" class="form-text text-muted">If you are using a <b>School E-Mail</b>, this UserId will be overwritten by your Student ID.</small>
+                        </div>
+                        <hr>
                         <div class="form-group">
                             <label for="pasword">Password:</label>
                             <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
-                            <div class="form-check">
-                                <input onclick="myFunction()" class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    Show Password
-                                </label>
-                            </div>
-                            <p class="text-muted"><a href="/api/register"><u>Create an Account</u></a></p>
-                            <p class="text-muted"><a href="/api/forgot-password">Forgot Password?</a></p>
+
+                            <label for="paswordCheck">Confirm Password:</label>
+                            <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" value="" placeholder="Password">
+                            <small id="passwordHelp" class="form-text text-muted">Passwords with the length 8-12 with symbols and numbers are the most secure.</small>
+
+                            <hr>
+
+                            <p class="text-muted">Have an account? <a href="/api/register"><u>Login</u></a></p>
                         </div>
                     </div>
                 </div>

@@ -25,3 +25,7 @@ h4.card-title{
 p{
     margin-bottom: 0;
 }
+
+#password {
+    margin-bottom: 7px;
+}

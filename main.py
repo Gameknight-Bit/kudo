@@ -49,11 +49,11 @@ def register():
     message = '' #output message
 
     if request.method == 'POST' and 'userid' in request.form and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'passwordCheck' in request.form:
-        userid = request.form['userid']
-        username = request.form['username']
-        password = request.form['password']
-        passwordCheck = request.form['passwordCheck']
-        email = request.form['email']
+        userid = request.form['userid'].encode('utf8').decode('utf8')
+        username = request.form['username'].encode('utf8').decode('utf8')
+        password = request.form['password'].encode('utf8').decode('utf8')
+        passwordCheck = request.form['passwordCheck'].encode('utf8').decode('utf8')
+        email = request.form['email'].encode('utf8').decode('utf8')
 
         if not re.fullmatch(emailRegex, email):
             message = "Invalid email address!"
@@ -85,7 +85,7 @@ def register():
                 #Needs to send verification request#
                 acc = User(userid, username, email, password)
                 acc.setAttributes({"Misc": {"CreationDate": int(time.time())}})
-                users.SetAsync(acc.toDict())
+                users.SetAsync(userid, acc.toDict())
     elif request.method == "POST":
         message = "Please fill out the form!"
 
@@ -109,7 +109,7 @@ def login():
         if users.CheckAsync(username):
             acc = User.fromDict(users.GetAsync(username))
         else:
-            for x in users.GetAsDict():
+            for x in users.GetAsDict().values():
                 if x['UserId'] == username or x["Username"] == username or x["Email"] == username:
                     acc = User.fromDict(x)
                     break
@@ -122,6 +122,7 @@ def login():
                 session['id'] = acc.UserId
                 session['username'] = acc.Username
                 session['lastupdate'] = int(time.time())
+                return redirect(url_for('home'))
             else:
                 message = "Incorrect password or username"
     elif request.method == "POST":

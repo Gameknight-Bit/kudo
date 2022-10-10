@@ -21,24 +21,28 @@ import bcrypt
 # }
 
 def get_hashed_password(plain_text):
-    return bcrypt.hashpw(plain_text, bcrypt.gensalt())
+    return bcrypt.hashpw(plain_text.encode('utf8'), bcrypt.gensalt())
 
 def check_password(plain_text, hashed_password):
-    return bcrypt.checkpw(plain_text, hashed_password)
+    return bcrypt.checkpw(plain_text.encode('utf8'), hashed_password.encode('utf8'))
 
 class User():
     def __init__(self, userid, username, email, password="placeholder"):
         self.UserId = userid
         self.Username = username
         self.Email = email
-        self.Password = get_hashed_password(password) #Hashed Password is stored!
+        self.Password = get_hashed_password(password).decode('utf8') #Hashed Password is stored!
         self.Claimed = False
         self.SocialLinks = {}
         self.Kudos = {}
         self.LastKudos = {}
         self.Classes = {}
         self.Verified = False
-        self.VerificationReq = {False, "placeholder request msg", 0}
+        self.VerificationReq = {
+            "sent": False, 
+            "msg": "placeholder request msg",
+            "time-sent": 0
+        }
         self.Misc = {}
 
     def setAttributes(self, dict):
@@ -57,6 +61,7 @@ class User():
                 setattr(tempUser, k, v) #No hashing multiple times!!!
             else:
                 setattr(tempUser, k, v)
+        return tempUser
 
     def toDict(self):
         return {key:value for key, value in self.__dict__.items() if not key.startswith('__') and not callable(key)}

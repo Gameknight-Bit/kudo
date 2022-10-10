@@ -63,7 +63,7 @@ def cleanValues(val): #Checks to make sure value is ready to be inserted into .j
                 retVal[key] = cleanValues(value)
             return retVal
         except:
-            assert(False, "Exception occured when trying to convert data of type: '"+str(type(val))+"' Please contact Gameknight-Bit on the error!")
+            assert False, "Exception occured when trying to convert data of type: '"+str(val)+" } "+str(type(val))+"' Please contact Gameknight-Bit on the error!"
             return None
 
 
@@ -71,7 +71,7 @@ def cleanValues(val): #Checks to make sure value is ready to be inserted into .j
 class Datastore:
     def __init__(self, datastore_name):
         self.Path = DATASTORE_PATH+"/"+datastore_name+'.json'
-        with open(DATASTORE_PATH+"/"+datastore_name+'.json', "w") as f:
+        with open(DATASTORE_PATH+"/"+datastore_name+'.json', "r+") as f:
             if SUCCESS_MSGS:
                 print(datastore_name+'.json has been accessed!')
 
@@ -84,7 +84,7 @@ class Datastore:
     #Sets value parameter to associated key
     def SetAsync(self, key, value):
         if key == "VersionDatastore111":
-            assert(False, "Key cannot be named 'VersionDatastore111' as it is already in use!")
+            assert False, "Key cannot be named 'VersionDatastore111' as it is already in use!"
             return None
 
         with open(self.Path, "r+") as f:
@@ -143,11 +143,11 @@ class Datastore:
 def NewDatastore(name):
     name = cleanName(name)
     try:
-        assert(exists(DATASTORE_PATH+"/"+name+".json"), "Datastore key provided is already in use! Try a different name other than '"+name+"'")
+        assert exists(DATASTORE_PATH+"/"+name+".json")==False, "Datastore key provided is already in use! Try a different name other than '"+name+"'"
     except Exception as e:
         print(e)
         return
-    with open(DATASTORE_PATH+"/"+name+".json", "r+") as f:
+    with open(DATASTORE_PATH+"/"+name+".json", "x") as f:
         f.seek(0)
         json.dump({}, f, ensure_ascii=False, indent=INDENT_SPACING) #inits file with {}
         f.truncate()
