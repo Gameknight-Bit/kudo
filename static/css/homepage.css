@@ -35,6 +35,11 @@ body {
     overflow: hidden;
 }
 
+#textmove h1{
+    position: relative;
+    transition: 0.5s;
+}
+
 .navbar {
     background: transparent;
     border: transparent;

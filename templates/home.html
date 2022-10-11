@@ -9,14 +9,61 @@
 <section id="intro">
     <div class="intro-text">
         <h1>Let's compete together,</h1>
-        <div class="container overflow-hidden">
-            <h1 class="0ms">Openly</h1>
+        <div id="textmove" class="container overflow-hidden">
+            <h1 class="1ms">Openly</h1>
             <h1 class="500ms">Smarter</h1>
             <h1 class="1000ms">Faster</h1>
-            <h1 class="3000s">Better</h1>
+            <h1 class="3000ms">Better</h1>
         </div>
         <hr class="shortCenter">
         <a href="/order-page" class="btn-get-started scrollto">Start Now!</a>
     </div>
 </section>
+
+<script> //Script that changes div text when page runs
+function pog(){
+    console.log("Pog")
+
+    openly = document.getElementsByClassName("1ms")[0];
+    smarter = document.getElementsByClassName("500ms")[0];
+    faster = document.getElementsByClassName("1000ms")[0];
+    better = document.getElementsByClassName("3000ms")[0];
+
+    num = 1
+
+    openly.style.top = 0;
+    smarter.style.top = 0;
+    faster.style.top = 0;
+    better.style.top = 0;
+
+    function move(elem, wait){
+        elem.style.top = (-76*(num-1))+"px";
+        
+        console.log(num)
+        console.log(elem)
+        if (wait != -1){
+            setTimeout(function(){
+                elem.style.top = (-76*num)+"px";
+                num += 1
+                
+            }, wait)
+        }
+    }
+
+    move(openly, 1000)
+    setTimeout(function(){
+        move(smarter, 1000)
+    }, 1500)
+    setTimeout(function(){
+        move(faster, 1000)
+    }, 3100)
+    setTimeout(function(){
+        move(better, -1)
+    }, 5500)
+}
+
+document.onload = pog();
+
+</script>
+
 {% endblock %}
