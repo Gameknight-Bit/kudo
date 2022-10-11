@@ -3,11 +3,13 @@
 
 {% block home %}class="active"{% endblock %}
 
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">{% endblock %}
+
 {% block content %}
 <section id="intro">
     <div class="intro-text">
-        <h1>WSHS Kudos</h1>
-        <hr class="bar">
+        <h1>Let's compete together. <br>For a better, </h1>
+        <hr class="shortCenter">
         <a href="/order-page" class="btn-get-started scrollto">Start Now!</a>
     </div>
 </section>

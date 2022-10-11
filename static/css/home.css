@@ -1,3 +1,5 @@
+/* CSS Elements not unique to any page */
+
 /* Hr Elements */
 
 hr {
@@ -9,6 +11,14 @@ hr {
 hr.short{
     border-top: 2px solid #3b3b3b;
     width: 20%;
+}
+
+hr.shortCenter{
+    border-top: 3px solid #3b3b3b;
+    border-radius: 3px;
+    width: 15%;
+    margin: auto;
+    margin-bottom: 10px;
 }
 
 /* a tag */
@@ -62,6 +72,16 @@ a:active {
 /* When moving the mouse over the close button */
 .closebtn:hover {
     color: rgb(160, 160, 160);
+}
+
+/* NAVBAR */
+.navbar {
+    border-radius: 0;
+    padding: 4px 8px 8px 4px;
+}
+
+.nav a{
+    border-radius: 10px;
 }
 
 /*align*/

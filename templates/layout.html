@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link href="http://fonts.cdnfonts.com/css/alliance-no1" rel="stylesheet">
     {% block head %}{% endblock %}
 </head>
     
@@ -37,6 +38,7 @@
                 </ul>
                 {% if not session.loggedin %}
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/api/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                     <li><a href="/api/login"><span class="glyphicon glyphicon-log-in"></span> <u>Login</u></a></li>
                 </ul>
                 {% endif %}

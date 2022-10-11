@@ -1,0 +1,23 @@
+/* CSS Used for home.html */
+
+body {
+    background-image: url(../img/heroBack.png);
+    background-color: #292929;
+    background-size: 150%;
+}
+
+/* Intro Section */
+#intro {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+#intro h1 {
+    font-family: 'Alliance No.1', 'Ariel', sans-serif;
+    color: rgb(255, 255, 255);
+    font-size: 64px;
+    line-height: 68px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
