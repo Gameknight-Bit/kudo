@@ -1,16 +1,22 @@
 /* CSS Used for home.html */
 
 body {
+    padding-left: 10px;
+    padding-right: 10px;
     background-image: url(../img/heroBack.png);
     background-color: #292929;
     background-size: 150%;
+    background-repeat: repeat-y;
 }
 
 /* Intro Section */
 #intro {
-    align-items: center;
-    text-align: center;
+    align-items: left;
+    text-align: left;
     justify-content: center;
+    padding-top: 20vh;
+    padding-left: 5%;
+    padding-right: 5%
 }
 
 #intro h1 {
@@ -20,4 +26,19 @@ body {
     line-height: 68px;
     font-weight: 700;
     letter-spacing: -0.01em;
+}
+
+#intro .container.overflow-hidden {
+    padding: 0;
+    margin-left: 0;
+    height: 70px;
+    overflow: hidden;
+}
+
+.navbar {
+    background: transparent;
+    border: transparent;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
