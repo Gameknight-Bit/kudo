@@ -84,4 +84,17 @@ a:active {
     border-radius: 10px;
 }
 
+#profile-img {
+    max-width: 2.9em;
+    height: auto;
+    border-radius: 100%;
+    margin-right: 10px;
+    transition: 0.09s;
+    border: solid white 0px;
+}
+
+#profile-img:hover{
+    border: solid white 3px;
+}
+
 /*align*/
