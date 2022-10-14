@@ -50,7 +50,10 @@ def register():
 
     if request.method == 'POST' and 'userid' in request.form and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'passwordCheck' in request.form:
         userid = request.form['userid'].encode('utf8').decode('utf8')
+
         username = request.form['username'].encode('utf8').decode('utf8')
+        if userid == "":
+            userid = username
         password = request.form['password'].encode('utf8').decode('utf8')
         passwordCheck = request.form['passwordCheck'].encode('utf8').decode('utf8')
         email = request.form['email'].encode('utf8').decode('utf8')
@@ -75,7 +78,7 @@ def register():
                 elif acc.Email != email:
                     message = "Email does not match with linking account!"
                 else:
-                    message = "Sending confirmation email to '"+email+"'. <br>Please check your <b>email</b> and type the numbers sent below..."
+                    message = "Sending confirmation email to '"+email+"'. <br>Please check your email and type the numbers sent below..."
                     #is claiming account to be theirs
                     #need confirmation from e-mail
                     # VERIFIES ACCOUNT AUTOMATICALLY (Can start sending kudos automatically) #
