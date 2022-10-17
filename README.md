@@ -12,3 +12,10 @@ Website template for gamifying school based positive feedback (PBIS Program)
    - Leaderboard system for everyone to see
    - Teacher statistics for class
    - Classes (Grouping students into different classes from "Canvas")
+
+_______________________
+## Update-Log:
+### Minimum Viable Product (Beta v0.1)
+   *est release 1/1/2023*
+ - Flask Based website
+ - Works with Nginx and WSGI servers
