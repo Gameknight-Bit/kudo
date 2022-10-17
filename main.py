@@ -1,5 +1,6 @@
 # Imports #
 # if imports do not work try cmd 'pip install -r requirements.txt' #
+
 from flask import Flask, render_template, redirect, url_for, request, session
 import re
 import time
@@ -46,6 +47,9 @@ def home():
 
 @app.route("/api/register/", methods=["GET", "POST"]) #Register Account
 def register():
+    if 'loggedin' in session and session['loggedin'] == True:
+        return redirect(url_for('home'))
+
     message = '' #output message
 
     if request.method == 'POST' and 'userid' in request.form and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'passwordCheck' in request.form:
@@ -78,17 +82,20 @@ def register():
                 elif acc.Email != email:
                     message = "Email does not match with linking account!"
                 else:
-                    message = "Sending confirmation email to '"+email+"'. <br>Please check your email and type the numbers sent below..."
+                    message = "Sending confirmation email to '"+email+"'. Please check your email and type the numbers sent below..."
                     #is claiming account to be theirs
                     #need confirmation from e-mail
                     # VERIFIES ACCOUNT AUTOMATICALLY (Can start sending kudos automatically) #
                     
+                    return redirect(url_for('confirm'))
             else:
                 #New UNVERIFIED ACCOUNT# (Limits: cannot post pfp, cannot send kudos, cannot be placed on leaderboards)
                 #Needs to send verification request#
                 acc = User(userid, username, email, password)
-                acc.setAttributes({"Misc": {"CreationDate": int(time.time())}})
+                acc.setAttributes({"Claimed": True, "Misc": {"CreationDate": int(time.time())}})
                 users.SetAsync(userid, acc.toDict())
+
+                return redirect(url_for('login', msg="Account Sucessfully Created! Please Login...", err="False"))
     elif request.method == "POST":
         message = "Please fill out the form!"
 
@@ -96,13 +103,21 @@ def register():
 
 @app.route("/api/confirmation/", methods=["GET", "POST"])
 def confirm(): #Confirmation code enter
+    if 'loggedin' in session and session['loggedin'] == True:
+        return redirect(url_for('home'))
     message = ""
     if request.method == 'POST' and 'numbers1' in request.form:
         numbers = [request.form['numbers1'], request.form['numbers2'], request.form['numbers3'], request.form['numbers4'], request.form['numbers5'], request.form['numbers6']]
 
+    return render_template('confirmation.html')
+
 @app.route("/api/login/", methods=["GET", "POST"]) #Login
 def login():
-    message = ''
+    if 'loggedin' in session and session['loggedin'] == True:
+        return redirect(url_for('home'))
+
+    message = request.args.get('msg') or ''
+    err = request.args.get('err') or 'True'
     print(request.form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
@@ -137,7 +152,7 @@ def login():
         message = "Please fill out the form!"
 
     print(message)
-    return render_template('login.html', msg=message)
+    return render_template('login.html', msg=message, err=err)
 
 @app.route("/api/logout/")
 def logout():

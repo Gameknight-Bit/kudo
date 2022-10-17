@@ -56,7 +56,7 @@
     </nav>
 
     {% if msg != '' %}
-        <div class="alert">
+        <div class="{% if err == 'True' %}alert{% else %}good{% endif %}">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             <i>{{ msg }}</i>
         </div>
