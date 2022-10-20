@@ -87,13 +87,25 @@ def getUsers(dbType, id="", username="", email=""): #dbType = "Claimed" or "Uncl
         curDB = UserDB
     
     if id != "":
-        return curDB.search(Users.UserId == id)
+        ar = []
+        for item in curDB.search(Users.UserId == id):
+            ar.insert(User.fromDict(item))
+        return ar
     elif username != "":
-        return curDB.search(Users.Username == username)
+        ar = []
+        for item in curDB.search(Users.Username == username):
+            ar.insert(User.fromDict(item))
+        return ar
     elif email != "":
-        return curDB.search(Users.Email == email)
+        ar = []
+        for item in curDB.search(Users.Email == email):
+            ar.insert(User.fromDict(item))
+        return ar
     else:
-        return curDB
+        ar = []
+        for item in curDB:
+            ar.insert(User.fromDict(item))
+        return ar
 
 def setUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
     Users = Query()
@@ -104,7 +116,19 @@ def setUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
 
     if curDB.search(Users.UserId == user.UserId):
         return "Error: User already in DB, User updateUser or deleteUser first!!!"
+    curDB.insert(user.toDict())
 
+def updateUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
+    Users = Query()
+
+    curDB = UnclaimedUserDB
+    if dbType == "Claimed":
+        curDB = UserDB
+
+    if curDB.search(Users.UserId == user.UserId):
+        curDB.update(user.toDict(), Users.UserId==user.UserId)
+    else:
+        return "ERROR: Userid Not found in database..."
 
 def getDB(dbType): #dbType = "Claimed" or "Unclaimed"
     curDB = UnclaimedUserDB

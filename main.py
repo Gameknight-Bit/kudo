@@ -8,6 +8,7 @@ import time
 #File Imports#
 import DatastoreService
 from kudos import User
+import kudos
 
 ########### Constants ############
 MAX_USERNAME_LEN = 70 #Usernames cannot be over 70 characters long
@@ -91,7 +92,7 @@ def register():
             else:
                 #New UNVERIFIED ACCOUNT# (Limits: cannot post pfp, cannot send kudos, cannot be placed on leaderboards)
                 #Needs to send verification request#
-                acc = User(userid, username, email, password)
+                acc = kudos.
                 acc.setAttributes({"Claimed": True, "Misc": {"CreationDate": int(time.time())}})
                 users.SetAsync(userid, acc.toDict())
 
