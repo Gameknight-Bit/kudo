@@ -82,30 +82,27 @@ def initUser(id, username, email, password, isAdmin=False, isVerified=False, use
 def getUsers(dbType, id="", username="", email=""): #dbType = "Claimed" or "Unclaimed"
     Users = Query()
 
+    ar = []
+
     curDB = UnclaimedUserDB
     if dbType == "Claimed":
         curDB = UserDB
+    if dbType == "Both":
+        ar = getUsers("Claimed", id, username, email)
     
     if id != "":
-        ar = []
         for item in curDB.search(Users.UserId == id):
-            ar.insert(User.fromDict(item))
-        return ar
-    elif username != "":
-        ar = []
+            ar.append(User.fromDict(item))
+    if username != "":
         for item in curDB.search(Users.Username == username):
-            ar.insert(User.fromDict(item))
-        return ar
-    elif email != "":
-        ar = []
+            ar.append(User.fromDict(item))
+    if email != "":
         for item in curDB.search(Users.Email == email):
-            ar.insert(User.fromDict(item))
-        return ar
-    else:
-        ar = []
+            ar.append(User.fromDict(item))
+    if id=="" and username=="" and email=="":
         for item in curDB:
-            ar.insert(User.fromDict(item))
-        return ar
+            ar.append(User.fromDict(item))
+    return ar
 
 def setUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
     Users = Query()
