@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Leaderboard{% endblock %}
+
+{% block leaderboard %}class="active"{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/leaderboard.css') }}">{% endblock %}
+
+{% block content %}
+
+<section id="info">
+    <div class="info-text">
+        <h1><b>Leaderboards</b></h1>
+        <hr class="shortCenter">
+        <p><i>Use the leaderboards to compete with other's and climb to the top!</i></p>
+        <hr>
+    </div>
+</section>
+
+<section id="monthly">
+    <div class="monthly-text">
+        <h2 style="margin-bottom: 0px"><b>Top-Monthly Leaderboard</b></h2>
+        <p class="light-text"><u>(November)</u></p>
+        <hr class="short">
+        
+        <hr>
+    </div>
+</section>
+
+{% endblock %}
