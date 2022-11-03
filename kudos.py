@@ -7,8 +7,8 @@ from tinydb import TinyDB, Query
 KUDO_TIMEFRAME = 7 #Time in days where kudo is allowed
 KUDO_LIMIT = 5
 
-UserDB = TinyDB('Users.json')
-UnclaimedUserDB = TinyDB('UnclaimedUsers.json')
+UserDB = TinyDB('Users.json', sort_keys=True, indent=4)
+UnclaimedUserDB = TinyDB('UnclaimedUsers.json', sort_keys=True, indent=4)
 
 ###############
 
@@ -70,6 +70,9 @@ class User():
 
     def toDict(self):
         return {key:value for key, value in self.__dict__.items() if not key.startswith('__') and not callable(key)}
+
+    def getKudosScore(self):
+        
 
 def initUser(id, username, email, password, isAdmin=False, isVerified=False, userRole="Student"):
     user = User(id, username, email, password)

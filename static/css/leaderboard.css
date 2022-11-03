@@ -12,6 +12,12 @@ h1{
     font-family: 'Alliance No.1', 'Ariel', sans-serif;
 }
 
+.light-text{
+    color: rgb(192, 192, 192);
+    font-size: 20px;
+    margin-bottom: 0px;
+}
+
 #info p{
     font-size: 22px;
     text-align: center;
@@ -31,4 +37,13 @@ hr.shortCenter, hr.short{
 
 hr{
     border-top-color: rgb(161, 161, 161);
+}
+
+table {
+    background-color: white;
+    border-color: rgb(107, 107, 107);
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 10px;
+    border-collapse: separate;
 }
