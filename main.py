@@ -9,6 +9,8 @@ import time
 from kudos import User
 import kudos
 
+import leaderboard
+
 ########### Constants ############
 MAX_USERNAME_LEN = 70 #Usernames cannot be over 70 characters long
 MAX_USERID_LEN = 20 #Usernames cannot be over 20 characters long
@@ -166,6 +168,9 @@ def logout():
 
 @app.route("/leaderboard")
 def leaderboard():
+    leaderboards = {}
+    leaderboards["monthly"] = leaderboard.getTopPlayers(10, "Monthly")
+
     return render_template("leaderboard.html")
 
 if __name__ == "__main__":

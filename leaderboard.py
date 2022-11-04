@@ -9,7 +9,7 @@ def getTopPlayers(numUsers: int, type: str = "All-Time"):
     Users = UserDB.search(User.Claimed == True)
     if len(Users) == 0:
         return []
-    Users = sorted(Users.items(), key=lambda item: item.getKudoScore(), reverse=True)
+    Users = sorted(Users.items(), key=lambda item: item.getKudoScore(type), reverse=True)
     
     if len(Users) <= numUsers:
         return Users

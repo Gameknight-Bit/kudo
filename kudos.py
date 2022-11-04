@@ -2,6 +2,9 @@
 # 9/28/2022 #
 
 import bcrypt
+import time
+from datetime import datetime
+from uuid import uuid4 as uuid
 from tinydb import TinyDB, Query
 
 KUDO_TIMEFRAME = 7 #Time in days where kudo is allowed
@@ -18,6 +21,45 @@ def get_hashed_password(plain_text):
 def check_password(plain_text, hashed_password):
     return bcrypt.checkpw(plain_text.encode('utf8'), hashed_password.encode('utf8'))
 
+def KudoScoreCalc(kudosObjs):
+    totalScore = 0
+    for v in kudosObjs:
+        if v.Quantiled == False:
+            totalScore += 1
+        else:
+            #LOOKUP GIVENBY USER AND CHECK WHAT QUANTILE THEY ARE IN THAT THEY GAVE POINTS!!!!
+            Quantile = 1
+            totalScore += 1/Quantile
+        
+        if "ExtraPoints" in v.Metadata.keys():
+            totalScore += float(v.Metadata["ExtraPoints"])
+
+    return totalScore
+
+class Kudos():
+    def __init__(self, useridgiven: str) -> None:
+        self.ID = str(uuid())
+        self.TimeGiven = int(time.time())
+        self.GivenBy = useridgiven
+        self.Quantiled = False
+        self.Metadata = {}
+
+    def setAttributes(self, dict):
+        for k, v in dict.items():
+            setattr(self, k, v)
+
+    def fromDict(dir):
+        tempUser = Kudos(dir["GivenBy"])
+        for k, v in dir.items():
+            if k == "GivenBy":
+                continue
+            else:
+                setattr(tempUser, k, v)
+        return tempUser
+
+    def toDict(self):
+        return {key:value for key, value in self.__dict__.items() if not key.startswith('__') and not callable(key)}
+
 class User():
     def __init__(self, userid, username, email, password="placeholder"):
         self.UserId = userid
@@ -27,9 +69,10 @@ class User():
         self.Claimed = False
         self.Verified = False
         self.SocialLinks = {}
-        self.Kudos = {}
-        self.LastKudos = {
+        self.Kudos = {} #Kudos Recieved
+        self.LastKudos = { #Kudos Given out
             "LastTime": 0,
+            "TotalGiven": 0,
             "Kudos": {}
         }
         self.KudoSettings = {
@@ -71,8 +114,22 @@ class User():
     def toDict(self):
         return {key:value for key, value in self.__dict__.items() if not key.startswith('__') and not callable(key)}
 
-    def getKudosScore(self):
-        
+    def getKudosScore(self, type: str = "All-Time"):
+        if type == "All-Time":
+            return KudoScoreCalc(self.Kudos)
+        elif type == "Monthly":
+            arr = []
+
+            given_date = datetime.today().date()
+            first_day_of_month = given_date.replace(day = 1)
+            latest_unix = time.mktime(first_day_of_month.timetuple())
+
+            for v in self.Kudos:
+                if v.TimeGiven >= latest_unix:
+                    arr.append(v)
+
+            return KudoScoreCalc(arr)
+
 
 def initUser(id, username, email, password, isAdmin=False, isVerified=False, userRole="Student"):
     user = User(id, username, email, password)
