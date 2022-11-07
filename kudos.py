@@ -65,6 +65,7 @@ class User():
         self.UserId = userid
         self.Username = username
         self.Email = email
+        self.Grade = "?"
         self.Password = get_hashed_password(password).decode('utf8') #Hashed Password is stored!
         self.Claimed = False
         self.Verified = False

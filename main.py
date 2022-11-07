@@ -167,11 +167,11 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route("/leaderboard")
-def leaderboard():
+def leaders():
     leaderboards = {}
     leaderboards["monthly"] = leaderboard.getTopPlayers(10, "Monthly")
 
-    return render_template("leaderboard.html")
+    return render_template("leaderboard.html", boards=leaderboards)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True) #change when deploying :)!

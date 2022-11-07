@@ -31,14 +31,21 @@
                 </tr>
             </thead>
             <tbody>
+                {% for userIndex in range(boards["monthly"]|length) %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Example User</td>
-                    <td>165.3</td>
-                    <td>11th</td>
+                    {% set user = boards["monthly"][userIndex] %}
+                    <th scope="row">{{ userIndex+1 }}</th>
+                    <td>{{ user.Username }}</td>
+                    <td>{{ user.getKudosScore("Monthly") }}</td>
+                    <td>{{ user.Grade }}</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
+        <h3>Rewards:</h3>
+        <p> - 1st Place: 100 Kudo Coin + 1st Place Badge</p>
+        <p> - 2nd Place: 50 Kudo Coin + 2nd Place Badge</p>
+        <p> - 3rd Place: 25 Kudo Coin + 3rd Place Badge</p>
         <hr>
     </div>
 </section>
