@@ -8,7 +8,6 @@ def getTopPlayers(numUsers: int, type: str = "All-Time"):
     User = Query()
 
     Users = UserDB.search(User.Claimed == True)
-    print(Users)
     if len(Users) == 0:
         return []
     for i in range(len(Users)):

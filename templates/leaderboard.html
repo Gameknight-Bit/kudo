@@ -35,7 +35,7 @@
                 <tr>
                     {% set user = boards["monthly"][userIndex] %}
                     <th scope="row">{{ userIndex+1 }}</th>
-                    <td>{{ user.Username }}</td>
+                    <td><a href="/user/{{ user.UserId }}">{{ user.Username }}</a></td>
                     <td>{{ user.getKudosScore("Monthly") }}</td>
                     <td>{{ user.Grade }}</td>
                 </tr>

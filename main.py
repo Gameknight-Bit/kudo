@@ -173,5 +173,15 @@ def leaders():
 
     return render_template("leaderboard.html", boards=leaderboards)
 
+@app.route("/user/<userId>")
+def userPage(userId):
+    users = kudos.getUsers("Claimed", id=userId)
+    if len(users) > 0:
+        users = users[0]
+    else:
+        users = ""
+
+    return render_template("user.html", User=users)
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True) #change when deploying :)!

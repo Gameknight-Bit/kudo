@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}{{ User.Username }}'s Profile{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img class="profile-large" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}">
+            <h3> {{User.Username}} </h3>
+            <p class="light-text"> @{{User.UserId}}</p>
+        </div>
+        <div class="col">
+            <div class="kudo-info">
+                <p>Grade Level: {{User.Grade}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
