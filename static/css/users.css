@@ -5,3 +5,37 @@ body {
 h1,h2,h3,h4,h5,p {
     color: white;
 }
+
+.img-border-line {
+    border-top:#8e90a7 2px solid;
+    position:fixed;
+    width: 100%;
+    top: 20vh;
+}
+
+.profile-large {
+    border-radius: 100%;
+    border-style: solid;
+    border-color: #8e90a7;
+    border-width: 3px;
+    margin-bottom: 5px;
+}
+
+#profile-info h2{
+    margin-bottom: 2px;
+}
+
+.light-text {
+    color: rgb(202, 202, 202);
+}
+
+.kudo-info {
+    margin-top: 70px;
+    background-color: white;
+    border: 3px #8e90a7 solid;
+    border-radius: 5px;
+}
+
+#kudo-info {
+    color: rgb(46, 46, 46);
+}

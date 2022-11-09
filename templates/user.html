@@ -5,19 +5,23 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <img class="profile-large" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}">
-            <h3> {{User.Username}} </h3>
-            <p class="light-text"> @{{User.UserId}}</p>
-        </div>
-        <div class="col">
-            <div class="kudo-info">
-                <p>Grade Level: {{User.Grade}}</p>
+<section id="profile-info">
+    <hr class="img-border-line">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <img class="profile-large" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}">
+                <h2><b> {{User.Username}} </b></h2>
+                <p class="light-text"><i> @{{User.UserId}}</i></p>
+                <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
+            </div>
+            <div class="col-lg-7">
+                <div id="kudo-info" class="kudo-info">
+                    <p>Grade Level: {{User.Grade}}</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 {% endblock %}
