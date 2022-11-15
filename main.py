@@ -6,9 +6,10 @@ import re
 import time
 
 #File Imports#
-import DatastoreService
 from kudos import User
 import kudos
+
+import leaderboard
 
 ########### Constants ############
 MAX_USERNAME_LEN = 70 #Usernames cannot be over 70 characters long
@@ -19,7 +20,7 @@ SESSION_TIMEOUT = 1*3600 #Number of hours *3600
 ##################################
 
 # Init #
-users = DatastoreService.GetDatastore("Users")
+#users = DatastoreService.GetDatastore("Users")
 # Datastore Key:
 # UserId: {
 #   "UserId": UserId,
@@ -76,8 +77,8 @@ def register():
         elif len(username) > MAX_USERNAME_LEN:
             message = 'Username chracters need to be less than '+str(MAX_USERNAME_LEN)+'!'
         else:
-            if users.CheckAsync(userid):
-                acc = User.fromDict(users.GetAsync(userid))
+            if len(kudos.getUsers("Both", id = userid)) != 0 :
+                acc = kudos.getUsers("Both", id = userid)[0]
                 if acc.Claimed == True:
                     message = "Account already exists!"
                 elif acc.Email != email:
@@ -92,9 +93,9 @@ def register():
             else:
                 #New UNVERIFIED ACCOUNT# (Limits: cannot post pfp, cannot send kudos, cannot be placed on leaderboards)
                 #Needs to send verification request#
-                acc = kudos.
+                acc = kudos.initUser(userid, username, email, password, False, False)
                 acc.setAttributes({"Claimed": True, "Misc": {"CreationDate": int(time.time())}})
-                users.SetAsync(userid, acc.toDict())
+                kudos.setUser("Claimed", acc)
 
                 return redirect(url_for('login', msg="Account Sucessfully Created! Please Login...", err="False"))
     elif request.method == "POST":
@@ -130,16 +131,17 @@ def login():
 
         acc = None
 
-        if users.CheckAsync(username):
-            acc = User.fromDict(users.GetAsync(username))
+        if len(kudos.getUsers("Claimed", username=username)) != 0:
+            acc = kudos.getUsers("Claimed", username=username)[0]
         else:
-            for x in users.GetAsDict().values():
-                if x['UserId'] == username or x["Username"] == username or x["Email"] == username:
-                    acc = User.fromDict(x)
-                    break
+            acc = kudos.getUsers("Claimed", id=username, username=username, email=username)
+            if len(acc) != 0:
+                acc = acc[0]
+            else:
+                acc = None
             
         if acc == None:
-            message = "Incorrect username"
+            message = "Username does not exist..."
         else:
             if acc.checkPass(password):
                 session['loggedin'] = True
@@ -163,6 +165,23 @@ def logout():
     session.pop('lastupdate', None)
 
     return redirect(url_for('login'))
+
+@app.route("/leaderboard")
+def leaders():
+    leaderboards = {}
+    leaderboards["monthly"] = leaderboard.getTopPlayers(10, "Monthly")
+
+    return render_template("leaderboard.html", boards=leaderboards)
+
+@app.route("/user/<userId>")
+def userPage(userId):
+    users = kudos.getUsers("Claimed", id=userId)
+    if len(users) > 0:
+        users = users[0]
+    else:
+        users = ""
+
+    return render_template("user.html", User=users)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True) #change when deploying :)!

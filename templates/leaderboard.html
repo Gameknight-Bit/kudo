@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Leaderboard{% endblock %}
+
+{% block leaderboard %}class="active"{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/leaderboard.css') }}">{% endblock %}
+
+{% block content %}
+
+<section id="info">
+    <div class="info-text">
+        <h1><b>Leaderboards</b></h1>
+        <hr class="shortCenter">
+        <p><i>Use the leaderboards to compete with other's and climb to the top!</i></p>
+        <hr>
+    </div>
+</section>
+
+<section id="monthly">
+    <div class="monthly-text">
+        <h2 style="margin-bottom: 0px"><b>Top-Monthly Leaderboard</b></h2>
+        <p class="light-text">(November)</p>
+        <hr class="short">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col"># Ranking</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Kudos Score</th>
+                    <th scope="col">Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for userIndex in range(boards["monthly"]|length) %}
+                <tr>
+                    {% set user = boards["monthly"][userIndex] %}
+                    <th scope="row">{{ userIndex+1 }}</th>
+                    <td><a href="/user/{{ user.UserId }}">{{ user.Username }}</a></td>
+                    <td>{{ user.getKudosScore("Monthly") }}</td>
+                    <td>{{ user.Grade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h3>Rewards:</h3>
+        <p> - 1st Place: 100 Kudo Coin + 1st Place Badge</p>
+        <p> - 2nd Place: 50 Kudo Coin + 2nd Place Badge</p>
+        <p> - 3rd Place: 25 Kudo Coin + 3rd Place Badge</p>
+        <hr>
+    </div>
+</section>
+
+{% endblock %}
