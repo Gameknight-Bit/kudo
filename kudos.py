@@ -10,8 +10,8 @@ from tinydb import TinyDB, Query
 KUDO_TIMEFRAME = 7 #Time in days where kudo is allowed
 KUDO_LIMIT = 5
 
-UserDB = TinyDB('Users.json', sort_keys=True, indent=4)
-UnclaimedUserDB = TinyDB('UnclaimedUsers.json', sort_keys=True, indent=4)
+UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
+UnclaimedUserDB = TinyDB('datastore/UnclaimedUsers.json', sort_keys=True, indent=4)
 
 ###############
 

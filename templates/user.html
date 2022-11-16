@@ -7,17 +7,38 @@
 
 <section id="profile-info">
     <hr class="img-border-line">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-5">
-                <img class="profile-large" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}">
-                <h2><b> {{User.Username}} </b></h2>
-                <p class="light-text"><i> @{{User.UserId}}</i></p>
-                <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
-            </div>
-            <div class="col-lg-7">
-                <div id="kudo-info" class="kudo-info">
-                    <p>Grade Level: {{User.Grade}}</p>
+    <div class="page-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <img class="profile-large" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}">
+                    {% if User.Verified == True %}
+                        <img class="verification-ico" src="{{ url_for('static', filename='/img/Verified.png') }}">
+                    {% endif %}
+                    <h2><b> {{User.Username}} </b></h2>
+                    <p class="light-text"><i> @{{User.UserId}}</i></p>
+                    <p style="margin-bottom: 0px" class="light-text"><b><i>Status:</i></b></p>
+                    <div class="clear-container">
+                        <p>{{User.Status}}</p>
+                    </div>
+
+                    {% if session.id == User.UserId %}
+                        <button id="EditButton" type="button" class="btn btn-secondary btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/edit'"><b>Edit Profile</b></button>
+                    {% elif AbleToDonate == True %}
+                        <button id="KudoButton" type="button" class="btn btn-success btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/give'"><b>Give Kudos</b></button>
+                    {% endif %}
+
+                    <hr>
+
+                    <p><b>Joined: </b><i>{{ User.Misc["CreationDate"]|todate }}</i></p>
+
+                    <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
+                </div>
+                <div class="col-lg-7">
+                    <div id="kudo-info" class="kudo-info">
+                        <p>Grade Level: {{User.Grade}}</p>
+                        <p></p>
+                    </div>
                 </div>
             </div>
         </div>

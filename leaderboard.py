@@ -2,7 +2,7 @@ from tinydb import TinyDB, Query
 import kudos
 from kudos import User as UserObj
 
-UserDB = TinyDB('Users.json', sort_keys=True, indent=4)
+UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
 
 def getTopPlayers(numUsers: int, type: str = "All-Time"):
     User = Query()

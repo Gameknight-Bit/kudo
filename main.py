@@ -9,6 +9,8 @@ import time
 from kudos import User
 import kudos
 
+import datetime
+
 import leaderboard
 
 ########### Constants ############
@@ -181,7 +183,17 @@ def userPage(userId):
     else:
         users = ""
 
-    return render_template("user.html", User=users)
+    return render_template("user.html", User=users, AbleToDonate=True)
+
+
+############## JINJA2 FILTER STUFF :) #############################
+
+#Used for converting unix time into dates
+@app.template_filter('todate')
+def _jinja2_filter_datetime(date, fmt=None):
+    print(date)
+    dt = datetime.datetime.fromtimestamp(date)
+    return dt.strftime("%B %d, %Y")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True) #change when deploying :)!
