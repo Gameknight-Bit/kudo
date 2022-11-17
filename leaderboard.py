@@ -4,7 +4,12 @@ from kudos import User as UserObj
 
 UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
 
+def updateDB():
+    UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
+
 def getTopPlayers(numUsers: int, type: str = "All-Time"):
+    updateDB()
+
     User = Query()
 
     Users = UserDB.search(User.Claimed == True)

@@ -150,6 +150,13 @@ def login():
                 session['id'] = acc.UserId
                 session['username'] = acc.Username
                 session['lastupdate'] = int(time.time())
+
+                if 'previousurl' in session:
+                    if session['previousurl'] != "":
+                        urlname = session['previousurl']
+                        session.pop('previousurl')
+                        return redirect(urlname)
+
                 return redirect(url_for('home'))
             else:
                 message = "Incorrect password or username"
@@ -185,6 +192,30 @@ def userPage(userId):
 
     return render_template("user.html", User=users, AbleToDonate=True)
 
+@app.route("/user/<userId>/give")
+def givePage(userId):
+    user = kudos.getUsers("Claimed", id=userId)
+    if len(user) > 0:
+        user = user[0]
+    else:
+        redirect(url_for('.error', messages="User with ID: "+userId+" does NOT exist!", errorcode=404))
+
+    if session["loggedin"] == True:
+        loggedinuser = kudos.getUsers("Claimed", id=session['userid'])[0]
+    else:
+        session['previousurl'] = '/user/'+userId+'/give'
+        return redirect(url_for('login'))
+
+    user.
+
+    return render_template("user.html", User=user, AbleToDonate=True)
+
+###### Error Handling Pages ########
+@app.route("/error")
+def error():
+    message = request.args['messages'] #Using redirect(url_for('.error', message, errorcode))
+    errorcode = request.args['errorcode']
+    return render_template("error.html", Message=message, ErrorCode=errorcode)
 
 ############## JINJA2 FILTER STUFF :) #############################
 

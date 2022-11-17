@@ -74,7 +74,7 @@ class User():
         self.LastKudos = { #Kudos Given out
             "LastTime": 0,
             "TotalGiven": 0,
-            "Kudos": {}
+            "Kudos": {} #Only goes up to KUDO_LIMIT
         }
         self.KudoSettings = {
             "IsAdmin": False,
@@ -130,6 +130,25 @@ class User():
                     arr.append(v)
 
             return KudoScoreCalc(arr)
+
+    def giveStatus(self) -> bool:
+        if self.KudoSettings["IsAdmin"] == True or self.KudoSettings["Role"] == "Teacher" or self.KudoSettings["KudoLimit"] < 0:
+            return True
+
+        lastTime = self.LastKudos["LastTime"]
+        givenKudos = self.LastKudos["Kudos"]
+
+        maxUserKudos = self.KudoSettings["KudoLimit"]
+        timeframeUser = self.KudoSettings["Cooldowns"]
+
+        
+
+
+
+    def giveKudos(self, recipient, quantity: int = 1) -> bool:
+        if self.giveStatus() == False:
+            return False
+        
 
 
 def initUser(id, username, email, password, isAdmin=False, isVerified=False, userRole="Student"):
