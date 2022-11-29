@@ -24,7 +24,7 @@
 
                     {% if session.id == User.UserId %}
                         <button id="EditButton" type="button" class="btn btn-secondary btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/edit'"><b>Edit Profile</b></button>
-                    {% elif AbleToDonate == True %}
+                    {% elif AbleToDonate != False %}
                         <button id="KudoButton" type="button" class="btn btn-success btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/give'"><b>Give Kudos</b></button>
                     {% endif %}
 
