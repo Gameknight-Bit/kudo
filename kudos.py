@@ -125,13 +125,14 @@ class User():
             first_day_of_month = given_date.replace(day = 1)
             latest_unix = time.mktime(first_day_of_month.timetuple())
 
-            for v in self.Kudos:
+            for key, v in self.Kudos.items():
+                v = Kudos.fromDict(v)
                 if v.TimeGiven >= latest_unix:
                     arr.append(v)
 
             return KudoScoreCalc(arr)
 
-    def giveStatus(self) -> bool:
+    def giveStatus(self):
         if self.KudoSettings["IsAdmin"] == True or self.KudoSettings["Role"] == "Teacher" or self.KudoSettings["KudoLimit"] < 0:
             return True
 
@@ -139,16 +140,41 @@ class User():
         givenKudos = self.LastKudos["Kudos"]
 
         maxUserKudos = self.KudoSettings["KudoLimit"]
-        timeframeUser = self.KudoSettings["Cooldowns"]
+        timeframeUser = self.KudoSettings["Cooldowns"]*86400
 
-        
+        for key, item in givenKudos.copy().items(): #Cleans all kudos that have cooled down
+            kudo = Kudos.fromDict(item)
+            if int(time.time())-kudo.TimeGiven > timeframeUser:
+                givenKudos.pop(key)
 
+        if len(givenKudos) < maxUserKudos: #If updated list has spots avaliable
+            return int(maxUserKudos-len(givenKudos))
+        else:
+            return False
 
 
     def giveKudos(self, recipient, quantity: int = 1) -> bool:
-        if self.giveStatus() == False:
+        status = self.giveStatus() #false or number of kudos avaliable to give
+        if status == False:
             return False
         
+        for i in range(quantity):
+            # Give Recipient their kudos
+            kudo = Kudos(self.UserId)
+            recipient.Kudos[str(kudo.ID)] = kudo.toDict()
+
+            # Update own user with kudos
+            self.LastKudos["Kudos"][str(kudo.ID)] = kudo.toDict()
+            self.LastKudos["LastTime"] = int(time.time())
+            self.LastKudos["TotalGiven"] -=- 1 #-=- Incrementor >:)
+
+            if recipient.Claimed == True:
+                updateUser("Claimed", recipient)
+            else:
+                updateUser("Unclaimed", recipient)
+
+            updateUser("Claimed", self)
+            return True
 
 
 def initUser(id, username, email, password, isAdmin=False, isVerified=False, userRole="Student"):

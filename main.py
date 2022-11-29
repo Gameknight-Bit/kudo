@@ -198,17 +198,17 @@ def givePage(userId):
     if len(user) > 0:
         user = user[0]
     else:
-        redirect(url_for('.error', messages="User with ID: "+userId+" does NOT exist!", errorcode=404))
+        redirect(url_for('.error', messages="User with ID: "+str(userId)+" does NOT exist!", errorcode=404))
 
-    if session["loggedin"] == True:
-        loggedinuser = kudos.getUsers("Claimed", id=session['userid'])[0]
+    if "loggedin" in session and session["loggedin"] == True:
+        loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
     else:
         session['previousurl'] = '/user/'+userId+'/give'
         return redirect(url_for('login'))
 
-    user.
+    success = loggedinuser.giveKudos(user)
 
-    return render_template("user.html", User=user, AbleToDonate=True)
+    return render_template("user.html", User=user, AbleToDonate=loggedinuser.giveStatus(), Success = success)
 
 ###### Error Handling Pages ########
 @app.route("/error")
