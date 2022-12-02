@@ -185,12 +185,16 @@ def leaders():
 @app.route("/user/<userId>")
 def userPage(userId):
     users = kudos.getUsers("Claimed", id=userId)
+    loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
     if len(users) > 0:
         users = users[0]
     else:
         users = ""
 
-    return render_template("user.html", User=users, AbleToDonate=True)
+    if 'success' in request.args:
+        return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), Success = request.args["success"])
+    else:
+        return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus())
 
 @app.route("/user/<userId>/give")
 def givePage(userId):
@@ -208,7 +212,8 @@ def givePage(userId):
 
     success = loggedinuser.giveKudos(user)
 
-    return render_template("user.html", User=user, AbleToDonate=loggedinuser.giveStatus(), Success = success)
+    return redirect(url_for(".userPage", userId=userId, success=success))
+    #return render_template("user.html", User=user, AbleToDonate=loggedinuser.giveStatus(), Success = success)
 
 ###### Error Handling Pages ########
 @app.route("/error")

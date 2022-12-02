@@ -13,6 +13,13 @@ KUDO_LIMIT = 5
 UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
 UnclaimedUserDB = TinyDB('datastore/UnclaimedUsers.json', sort_keys=True, indent=4)
 
+def reinitDB():
+    global UserDB
+    global UnclaimedUserDB
+
+    UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
+    UnclaimedUserDB = TinyDB('datastore/UnclaimedUsers.json', sort_keys=True, indent=4)
+
 ###############
 
 def get_hashed_password(plain_text):
@@ -133,6 +140,7 @@ class User():
             return KudoScoreCalc(arr)
 
     def giveStatus(self):
+        print(self.KudoSettings)
         if self.KudoSettings["IsAdmin"] == True or self.KudoSettings["Role"] == "Teacher" or self.KudoSettings["KudoLimit"] < 0:
             return True
 
@@ -186,6 +194,7 @@ def initUser(id, username, email, password, isAdmin=False, isVerified=False, use
     return user
 
 def getUsers(dbType, id="", username="", email=""): #dbType = "Claimed" or "Unclaimed"
+    reinitDB()
     Users = Query()
 
     ar = []
@@ -211,6 +220,7 @@ def getUsers(dbType, id="", username="", email=""): #dbType = "Claimed" or "Uncl
     return ar
 
 def setUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
+    reinitDB()
     Users = Query()
 
     curDB = UnclaimedUserDB
@@ -222,6 +232,8 @@ def setUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
     curDB.insert(user.toDict())
 
 def updateUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
+    reinitDB()
+
     Users = Query()
 
     curDB = UnclaimedUserDB
@@ -234,6 +246,8 @@ def updateUser(dbType, user: User): #dbType = "Claimed" or "Unclaimed"
         return "ERROR: Userid Not found in database..."
 
 def getDB(dbType): #dbType = "Claimed" or "Unclaimed"
+    reinitDB()
+
     curDB = UnclaimedUserDB
     if dbType == "Claimed":
         curDB = UserDB
