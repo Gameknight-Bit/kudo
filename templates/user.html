@@ -33,6 +33,19 @@
                     <p><b>Joined: </b><i>{{ User.Misc["CreationDate"]|todate }}</i></p>
 
                     <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
+
+                    <div class="darken-screen">
+                        <div class="popup-confirm">
+                            <h2>Are you sure you want to send Kudos?</h2>
+                            <div class="popup-info">
+                                <h5><b>Receipt Info:</b></h5>
+                                <p>Recipient: <b>@{{User.UserId}}</b></p>
+                                <p>Number of Kudos to Send: 1</p>
+                                <p>Date Sent: </p>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-lg-7">
                     <div id="kudo-info" class="kudo-info">
@@ -44,5 +57,13 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    var elem = document.getElementById("KudoButton")
+    if (elem != null){
+
+        //window.location.href = '/user/{{ User.UserId }}/give'
+    }
+</script>
 
 {% endblock %}
