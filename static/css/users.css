@@ -2,7 +2,7 @@ body {
     background-color: #36384b;
 }
 
-h1,h2,h3,h4,h5,p {
+h1,h2,h3,h4,h5,p,label {
     color: white;
 }
 
@@ -137,4 +137,21 @@ div.kudo-info {
     z-index: 101;
     
     text-align: center;
+}
+
+.popup-confirm h2 {
+    font-size: 1.9em
+}
+
+hr.dashed{
+    border-top-style: dashed;
+    border-radius: 0;
+    margin-top: 7px;
+    margin-bottom: 0px;
+}
+
+.popup-info {
+    padding-top: 15px;
+    padding-left: 10px;
+    text-align: left;
 }

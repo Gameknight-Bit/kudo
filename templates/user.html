@@ -36,14 +36,38 @@
 
                     <div class="darken-screen">
                         <div class="popup-confirm">
-                            <h2>Are you sure you want to send Kudos?</h2>
-                            <div class="popup-info">
-                                <h5><b>Receipt Info:</b></h5>
-                                <p>Recipient: <b>@{{User.UserId}}</b></p>
-                                <p>Number of Kudos to Send: 1</p>
-                                <p>Date Sent: </p>
+                            <form class="form-inline">
+                                <h2><b>Are you sure you want to send Kudos? 👏</b></h2>
+                                <hr class="dashed">
+                                <div class="popup-info">
+                                    <h5><b>Receipt Info:</b></h5>
+                                    <p>Recipient: {{User.Username}} <b>(@{{User.UserId}})</b></p>
+                                    <div class="form-group">
+                                        <label for="NumberToSend">Number of Kudos to Send: </label>
+                                        {% if AbleToDonate == True %}
+                                            <input type="number" class="form-control" id="NumberToSend", placeholder="1">
+                                        {% else %}
+                                            <select class="form-control" id="NumberToSend">
+                                                {% for i in range(AbleToDonate) %}
+                                                    <option>{{i + 1}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        {% endif %}
+                                    </div>
+                                    <label id="dateSent">Date Sent: </label>
+                                    <script>
+                                        n = new Date();
+                                        y = n.getFullYear();
+                                        m = n.getMonth() + 1;
+                                        d = n.getDate();
+                                        time = n.getHours()+":"+n.getMinutes();
+                                        document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time
+                                    </script>
+                                </div>
                                 <hr>
-                            </div>
+                                <button type="submit" class="btn btn-success">Send Kudo 👏</button>
+                                <button type="cancel" class="btn btn-danger">Cancel 🗙</button>
+                            </form>
                         </div>
                     </div>
                 </div>
