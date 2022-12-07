@@ -34,43 +34,66 @@
 
                     <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
 
-                    <div class="darken-screen">
-                        <div class="popup-confirm">
-                            <form class="form-inline">
-                                <h2><b>Are you sure you want to send Kudos? 👏</b></h2>
-                                <hr class="dashed">
-                                <div class="popup-info">
-                                    <h5><b>Receipt Info:</b></h5>
-                                    <p>Recipient: {{User.Username}} <b>(@{{User.UserId}})</b></p>
-                                    <div class="form-group">
-                                        <label for="NumberToSend">Number of Kudos to Send: </label>
-                                        {% if AbleToDonate == True %}
-                                            <input type="number" class="form-control" id="NumberToSend", placeholder="1">
-                                        {% else %}
-                                            <select class="form-control" id="NumberToSend">
-                                                {% for i in range(AbleToDonate) %}
-                                                    <option>{{i + 1}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        {% endif %}
+                    {# if AbleToDonate != False #}
+                        <div class="darken-screen">
+                            <div class="popup-confirm">
+                                <form class="form-inline">
+                                    <h2><b>Are you sure you want to send Kudos? 👏</b></h2>
+                                    <hr class="dashed">
+                                    <div class="popup-info">
+                                        <h5><u><b>🧾Receipt Info:</b></u></h5> 
+                                        <p id="recipeint"><b>Recipient: </b>{{User.Username}} (@<i>{{User.UserId}}</i>)</p>
+                                        <div class="form-group">
+                                            <label for="NumberToSend">Number of Kudos to Send: </label>
+                                            {% if AbleToDonate == True %}
+                                                <input type="number" class="form-control" id="NumberToSend", placeholder="1">
+                                            {% else %}
+                                                <select class="form-control" id="NumberToSend">
+                                                    {% for i in range(AbleToDonate) %}
+                                                        <option>{{i + 1}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                        <label id="dateSent">Date Sent: </label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Custom Message?
+                                            </label>
+                                        </div>
+                                        <div class="form-group blue-textarea active-blue-textarea">
+                                            <p for="kudos-message">Message to Send:</p>
+                                            <textarea class="md-textarea form-control" id="kudos-message" rows="2"></textarea>
+                                        </div>
+
+                                        <script>
+                                            //Part for updating Date Sent Feild//
+                                            n = new Date();
+                                            y = n.getFullYear();
+                                            m = n.getMonth() + 1;
+                                            d = n.getDate();
+                                            min = n.getMinutes()
+                                            if (min.toString().length != 2){
+                                                min = "0"+min.toString()
+                                            }
+                                            time = n.getHours()+":"+min;
+                                            document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time
+
+                                            //Part for updating html to include message sending with kudos//
+                                        </script>
+
+
                                     </div>
-                                    <label id="dateSent">Date Sent: </label>
-                                    <script>
-                                        n = new Date();
-                                        y = n.getFullYear();
-                                        m = n.getMonth() + 1;
-                                        d = n.getDate();
-                                        time = n.getHours()+":"+n.getMinutes();
-                                        document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time
-                                    </script>
-                                </div>
-                                <hr>
-                                <button type="submit" class="btn btn-success">Send Kudo 👏</button>
-                                <button type="cancel" class="btn btn-danger">Cancel 🗙</button>
-                            </form>
+                                    <hr>
+                                    <button type="submit" class="btn btn-success">Send Kudos 👏</button>
+                                    <button type="cancel" class="btn btn-danger">Cancel 🗙</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {# endif #}
                 <div class="col-lg-7">
                     <div id="kudo-info" class="kudo-info">
                         <p>Grade Level: {{User.Grade}}</p>

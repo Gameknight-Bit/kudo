@@ -185,16 +185,20 @@ def leaders():
 @app.route("/user/<userId>")
 def userPage(userId):
     users = kudos.getUsers("Claimed", id=userId)
-    loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
     if len(users) > 0:
         users = users[0]
     else:
         users = ""
 
-    if 'success' in request.args:
-        return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), Success = request.args["success"])
-    else:
-        return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus())
+    if 'loggedin' in session and session['loggedin'] == True:
+        loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
+
+        if 'success' in request.args:
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), Success = request.args["success"])
+        else:
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus())
+    
+    return render_template("user.html", User=users, AbleToDonate=False)
 
 @app.route("/user/<userId>/give")
 def givePage(userId):

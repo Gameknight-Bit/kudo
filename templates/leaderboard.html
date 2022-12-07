@@ -34,7 +34,15 @@
                 {% for userIndex in range(boards["monthly"]|length) %}
                 <tr>
                     {% set user = boards["monthly"][userIndex] %}
-                    <th scope="row">{{ userIndex+1 }}</th>
+                    <th scope="row">
+                        {% if userIndex == 0 %}
+                        👑
+                        {% elif userIndex == 1 %}
+                        🏆
+                        {% elif userIndex == 2 %}
+                        🥇
+                        {% endif %}
+                        {{ userIndex+1 }}</th>
                     <td><a href="/user/{{ user.UserId }}">{{ user.Username }}</a></td>
                     <td>{{ user.getKudosScore("Monthly") }}</td>
                     <td>{{ user.Grade }}</td>
