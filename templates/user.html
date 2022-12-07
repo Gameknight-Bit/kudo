@@ -58,14 +58,14 @@
                                         <br>
                                         <label id="dateSent">Date Sent: </label>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style="display: none;" onclick="showHideArea(this)">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 Custom Message?
                                             </label>
                                         </div>
                                         <div class="form-group blue-textarea active-blue-textarea">
-                                            <p for="kudos-message">Message to Send:</p>
-                                            <textarea class="md-textarea form-control" id="kudos-message" rows="2"></textarea>
+                                            <p id="kudos-message-to-send" for="kudos-message">Message to Send:</p>
+                                            <textarea class="md-textarea form-control" id="kudos-message" rows="2" value = ""></textarea>
                                         </div>
 
                                         <script>
@@ -79,9 +79,41 @@
                                                 min = "0"+min.toString()
                                             }
                                             time = n.getHours()+":"+min;
-                                            document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time
+                                            document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time;
+
+                                            function showHideArea(box) {
+                                                var dv = document.getElementsByClassName("blue-textarea")[0];
+
+                                                dv.style.display = box.checked ? "block": "none";
+                                            }
 
                                             //Part for updating html to include message sending with kudos//
+                                            $("textarea").on('focus', function(){
+                                                var msg = document.getElementById("kudos-message-to-send")
+                                                var txtmsg = document.getElementById("kudos-message")
+
+                                                msg.style.transition = "0.2s"
+                                                txtmsg.style.transition = "0.2s"
+
+                                                txtmsg.style.marginTop = "16px";
+
+                                                msg.style.marginTop = "0px";
+                                                msg.style.fontSize = "0.8em";
+                                            })
+
+                                            $("textarea").on('blur', function(){
+                                                var msg = document.getElementById("kudos-message-to-send")
+                                                var txtmsg = document.getElementById("kudos-message")
+
+                                                if (txtmsg.value.trim() == "") {
+                                                    document.getElementById("kudos-message").style.marginTop = "0px";
+
+                                                    msg.style.fontSize = "1em";
+                                                    document.getElementById("kudos-message-to-send").style.marginTop = "5px";
+                                                }
+                                            })
+
+                                            $
                                         </script>
 
 

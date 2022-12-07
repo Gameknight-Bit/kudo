@@ -192,7 +192,7 @@ hr.dashed{
         border-width: 0;
         box-shadow: none;
         border-radius: 0;
-        border-bottom: #989cbb 3px solid;
+        border-bottom: #787981 2px solid;
         width: 70%!important;
     }
 
@@ -202,15 +202,17 @@ hr.dashed{
 
     .blue-textarea textarea.md-textarea:focus:not([readonly]) {
         border-bottom: 1px solid rgb(145, 147, 170);
-        box-shadow: 0 1px 0 0 rgb(145, 147, 170);
+        border-radius: 2px;
+        box-shadow: 0 3px 0 0 rgb(145, 147, 170);
     }
 
     .active-blue-textarea.md-form p.active {
         color: rgb(145, 147, 170);
+        font-weight: bolder;
     }
 
     .active-blue-textarea.md-form textarea.md-textarea:focus:not([readonly]) + label {
-        color: rgb(145, 147, 170);
+        color: rgb(78, 87, 184);
     }
 
 
