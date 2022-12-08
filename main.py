@@ -61,7 +61,7 @@ def register():
 
         username = request.form['username'].encode('utf8').decode('utf8')
         if userid == "":
-            userid = username
+            userid = username.lower().replace(' ', '_')
         password = request.form['password'].encode('utf8').decode('utf8')
         passwordCheck = request.form['passwordCheck'].encode('utf8').decode('utf8')
         email = request.form['email'].encode('utf8').decode('utf8')
@@ -82,7 +82,7 @@ def register():
             if len(kudos.getUsers("Both", id = userid)) != 0 :
                 acc = kudos.getUsers("Both", id = userid)[0]
                 if acc.Claimed == True:
-                    message = "Account already exists!"
+                    message = "Account userid already exists!"
                 elif acc.Email != email:
                     message = "Email does not match with linking account!"
                 else:
@@ -150,6 +150,9 @@ def login():
                 session['id'] = acc.UserId
                 session['username'] = acc.Username
                 session['lastupdate'] = int(time.time())
+                session['pfpurl'] = url_for('static', filename='/img/profilePics/Default.png')
+                if ("ProfilePicture" in acc.Misc) and (acc.Misc["ProfilePicture"] != "Default.png"):
+                    session['pfpurl'] = acc.Misc["ProfilePicture"]
 
                 if 'previousurl' in session:
                     if session['previousurl'] != "":
@@ -172,6 +175,7 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     session.pop('lastupdate', None)
+    session.pop('pfpurl', None)
 
     return redirect(url_for('login'))
 
@@ -190,16 +194,20 @@ def userPage(userId):
     else:
         users = ""
 
+    pic = url_for('static', filename='/img/profilePics/Default.png')
+    if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
+        pic = users.Misc["ProfilePicture"]
+
     if 'loggedin' in session and session['loggedin'] == True:
         loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
 
         if 'success' in request.args:
             print(request.args["success"])
-            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), Success = str(request.args["success"]))
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), ProfilePic=pic, Success = str(request.args["success"]))
         else:
-            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus())
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), ProfilePic=pic)
     
-    return render_template("user.html", User=users, AbleToDonate=False)
+    return render_template("user.html", User=users, AbleToDonate=False, ProfilePic=pic)
 
 @app.route("/user/<userId>/give", methods=["POST"])
 def givePage(userId):

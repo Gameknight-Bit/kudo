@@ -30,7 +30,7 @@
                 
                 {% if session.loggedin %}
                 <a class="pfp" href="/user/{{ session.id }}">
-                    <img id="profile-img" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}")>
+                    <img id="profile-img" src="{{session.pfpurl}}")>
                 </a>
                 {% endif %}
             </div>

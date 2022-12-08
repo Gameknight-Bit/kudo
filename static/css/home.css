@@ -95,6 +95,7 @@ a:active {
 
 #profile-img {
     max-width: 2.9em;
+    width: 100px;
     height: auto;
     border-radius: 100%;
     margin-right: 10px;

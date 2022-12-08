@@ -197,6 +197,7 @@ def initUser(id, username, email, password, isAdmin=False, isVerified=False, use
     user.KudoSettings["IsAdmin"] = isAdmin
     user.Verified = isVerified
     user.KudoSettings["Role"] = userRole
+    user.Misc["ProfilePicture"] = "Default.png"
 
     return user
 

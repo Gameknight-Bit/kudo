@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
-                    <img class="profile-large" src="{{ url_for('static', filename='/img/profilePics/Default.png') }}">
+                    <img class="profile-large" src="{{ ProfilePic }}">
                     {% if User.Verified == True %}
                         <img class="verification-ico" src="{{ url_for('static', filename='/img/Verified.png') }}">
                     {% endif %}
@@ -37,7 +37,7 @@
 
                     {% if AbleToDonate != False %}
                         <div class="darken-screen">
-                            <div class="popup-confirm">
+                            <div class="popup-confirm" id="popup-confirm">
                                 <form class="form-inline" action="/user/{{ User.UserId }}/give" method="post">
                                     <h2><b>Are you sure you want to send Kudos? 👏</b></h2>
                                     <hr class="dashed">
@@ -93,8 +93,10 @@
 
                                         function showHideArea(box) {
                                             var dv = document.getElementsByClassName("blue-textarea")[0];
+                                            var v = document.getElementById("popup-confirm")
 
                                             dv.style.display = box.checked ? "block": "none";
+                                            v.style.marginTop = box.checked ? "5%": "8%"
                                         }
 
                                         //Part for updating html to include message sending with kudos//
