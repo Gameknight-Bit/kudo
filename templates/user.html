@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}{{ User.Username }}'s Profile{% endblock %}
 
-{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">{% endblock %}
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">//CONFETTI!!!!!</script>{% endblock %}
 
 {% block content %}
 
@@ -25,7 +26,7 @@
                     {% if session.id == User.UserId %}
                         <button id="EditButton" type="button" class="btn btn-secondary btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/edit'"><b>Edit Profile</b></button>
                     {% elif AbleToDonate != False %}
-                        <button id="KudoButton" type="button" class="btn btn-success btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/give'"><b>Give Kudos</b></button>
+                        <button id="KudoButton" type="button" class="btn btn-success btn-sm"><b>Give Kudos</b></button>
                     {% endif %}
 
                     <hr>
@@ -34,10 +35,10 @@
 
                     <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
 
-                    {# if AbleToDonate != False #}
+                    {% if AbleToDonate != False %}
                         <div class="darken-screen">
                             <div class="popup-confirm">
-                                <form class="form-inline">
+                                <form class="form-inline" action="/user/{{ User.UserId }}/give" method="post">
                                     <h2><b>Are you sure you want to send Kudos? 👏</b></h2>
                                     <hr class="dashed">
                                     <div class="popup-info">
@@ -46,9 +47,9 @@
                                         <div class="form-group">
                                             <label for="NumberToSend">Number of Kudos to Send: </label>
                                             {% if AbleToDonate == True %}
-                                                <input type="number" class="form-control" id="NumberToSend", placeholder="1">
+                                                <input type="number" class="form-control" id="NumberToSend" name="NumberToSend" placeholder="1">
                                             {% else %}
-                                                <select class="form-control" id="NumberToSend">
+                                                <select class="form-control" id="NumberToSend" name="NumberToSend">
                                                     {% for i in range(AbleToDonate) %}
                                                         <option>{{i + 1}}</option>
                                                     {% endfor %}
@@ -58,74 +59,84 @@
                                         <br>
                                         <label id="dateSent">Date Sent: </label>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style="display: none;" onclick="showHideArea(this)">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="showHideArea(this)">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 Custom Message?
                                             </label>
                                         </div>
-                                        <div class="form-group blue-textarea active-blue-textarea">
+                                        <div class="form-group blue-textarea active-blue-textarea" style="display: none;">
                                             <p id="kudos-message-to-send" for="kudos-message">Message to Send:</p>
-                                            <textarea class="md-textarea form-control" id="kudos-message" rows="2" value = ""></textarea>
+                                            <textarea class="md-textarea form-control" id="kudos-message" name="KudosMessage" rows="2" value = ""></textarea>
                                         </div>
-
-                                        <script>
-                                            //Part for updating Date Sent Feild//
-                                            n = new Date();
-                                            y = n.getFullYear();
-                                            m = n.getMonth() + 1;
-                                            d = n.getDate();
-                                            min = n.getMinutes()
-                                            if (min.toString().length != 2){
-                                                min = "0"+min.toString()
-                                            }
-                                            time = n.getHours()+":"+min;
-                                            document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time;
-
-                                            function showHideArea(box) {
-                                                var dv = document.getElementsByClassName("blue-textarea")[0];
-
-                                                dv.style.display = box.checked ? "block": "none";
-                                            }
-
-                                            //Part for updating html to include message sending with kudos//
-                                            $("textarea").on('focus', function(){
-                                                var msg = document.getElementById("kudos-message-to-send")
-                                                var txtmsg = document.getElementById("kudos-message")
-
-                                                msg.style.transition = "0.2s"
-                                                txtmsg.style.transition = "0.2s"
-
-                                                txtmsg.style.marginTop = "16px";
-
-                                                msg.style.marginTop = "0px";
-                                                msg.style.fontSize = "0.8em";
-                                            })
-
-                                            $("textarea").on('blur', function(){
-                                                var msg = document.getElementById("kudos-message-to-send")
-                                                var txtmsg = document.getElementById("kudos-message")
-
-                                                if (txtmsg.value.trim() == "") {
-                                                    document.getElementById("kudos-message").style.marginTop = "0px";
-
-                                                    msg.style.fontSize = "1em";
-                                                    document.getElementById("kudos-message-to-send").style.marginTop = "5px";
-                                                }
-                                            })
-
-                                            $
-                                        </script>
-
-
                                     </div>
                                     <hr>
-                                    <button type="submit" class="btn btn-success">Send Kudos 👏</button>
-                                    <button type="cancel" class="btn btn-danger">Cancel 🗙</button>
+                                    <div class="kudo-self-stats">
+                                        <h5><b>👀Your Kudos Stats:</b></h5> 
+                                        <p><b>Number of <u>Kudos</u> left after gift:</b> </p>
+                                    </div>
+                                    <hr>
+                                    <button id="Sending-Kudos" type="submit" class="btn btn-success">Send Kudos 👏</button>
+                                    <button id="Cancel-Transaction" type="button" class="btn btn-danger">Cancel 🗙</button>
+
+                                    <script>
+                                        //Part for updating Date Sent Feild//
+                                        n = new Date();
+                                        y = n.getFullYear();
+                                        m = n.getMonth() + 1;
+                                        d = n.getDate();
+                                        min = n.getMinutes()
+                                        if (min.toString().length != 2){
+                                            min = "0"+min.toString()
+                                        }
+                                        time = n.getHours()+":"+min;
+                                        document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time;
+
+                                        function showHideArea(box) {
+                                            var dv = document.getElementsByClassName("blue-textarea")[0];
+
+                                            dv.style.display = box.checked ? "block": "none";
+                                        }
+
+                                        //Part for updating html to include message sending with kudos//
+                                        $("textarea").on('focus', function(){
+                                            var msg = document.getElementById("kudos-message-to-send")
+                                            var txtmsg = document.getElementById("kudos-message")
+
+                                            msg.style.transition = "0.2s"
+                                            msg.style.color = "rgb(193, 194, 207)"
+                                            msg.style.fontWeight = "bold"
+                                            txtmsg.style.transition = "0.2s"
+                                            
+
+                                            txtmsg.style.marginTop = "16px";
+
+                                            msg.style.marginTop = "-0.55vh";
+                                            msg.style.fontSize = "0.8em";
+                                        })
+
+                                        $("textarea").on('blur', function(){
+                                            var msg = document.getElementById("kudos-message-to-send")
+                                            var txtmsg = document.getElementById("kudos-message")
+
+                                            if (txtmsg.value.trim() == "") {
+                                                document.getElementById("kudos-message").style.marginTop = "0px";
+
+                                                msg.style.fontSize = "1em";
+                                                msg.style.color = "rgb(223, 225, 250)"
+                                                msg.style.fontWeight = "100"
+                                                document.getElementById("kudos-message-to-send").style.marginTop = "5px";
+                                            }
+                                        })
+
+                                        $("#Cancel-Transaction").click(function(){
+                                            $(".darken-screen").css("display", "none");
+                                        })
+                                    </script>
                                 </form>
                             </div>
                         </div>
+                    {% endif %}
                     </div>
-                {# endif #}
                 <div class="col-lg-7">
                     <div id="kudo-info" class="kudo-info">
                         <p>Grade Level: {{User.Grade}}</p>
@@ -137,11 +148,45 @@
     </div>
 </section>
 
-<script type="text/javascript">
-    var elem = document.getElementById("KudoButton")
-    if (elem != null){
+<script type="text/javascript"> //Confirmation Message")
+    $("#KudoButton").click(function(){
+        $(".darken-screen").css("display", "block");
+    })
 
-        //window.location.href = '/user/{{ User.UserId }}/give'
+    if ("{{Success}}" == "True"){
+        var myCanvas = document.createElement('canvas');
+        document.body.appendChild(myCanvas);
+        myCanvas.style.display = "block"
+        myCanvas.style.position = "fixed"
+        myCanvas.style.top = 0
+        myCanvas.style.left = 0
+        myCanvas.style.height = "100%"
+        myCanvas.style.width = "100%"
+
+        var myConfetti = confetti.create(myCanvas, {
+            resize: true,
+            useWorker: true
+        });
+        myConfetti({
+            particleCount: 200,
+            spread: 150,
+            colors: ["#419CFF", "#FFFFFF", "#C2C2C2", "#C0FFFC", "#56FF58", "#E48CFF"],
+            shapes: ["square"],
+            startVelocity: 70,
+            origin: {
+                y: 1
+            },
+            // any other options from the global
+            // confetti function
+        });
+
+        confetti();
+        setTimeout(() => {
+            confetti.reset();
+            setTimeout(() => {
+                myCanvas.style.display = "none"
+            }, 5000)
+        }, 500);
     }
 </script>
 

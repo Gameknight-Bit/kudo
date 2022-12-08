@@ -49,7 +49,11 @@ class Kudos():
         self.TimeGiven = int(time.time())
         self.GivenBy = useridgiven
         self.Quantiled = False
-        self.Metadata = {}
+        self.Metadata = {
+            "Event": "none",
+            "Note": "",
+            "Value": 1,
+        }
 
     def setAttributes(self, dict):
         for k, v in dict.items():
@@ -161,14 +165,17 @@ class User():
             return False
 
 
-    def giveKudos(self, recipient, quantity: int = 1) -> bool:
+    def giveKudos(self, recipient, quantity: int = 1, message: str = "") -> bool:
         status = self.giveStatus() #false or number of kudos avaliable to give
-        if status == False:
+        if status == False and status >= quantity:
             return False
+
+        print(quantity)
         
-        for i in range(quantity):
+        for _ in range(quantity):
             # Give Recipient their kudos
             kudo = Kudos(self.UserId)
+            kudo.Metadata["Message"] = message
             recipient.Kudos[str(kudo.ID)] = kudo.toDict()
 
             # Update own user with kudos
@@ -176,13 +183,13 @@ class User():
             self.LastKudos["LastTime"] = int(time.time())
             self.LastKudos["TotalGiven"] -=- 1 #-=- Incrementor >:)
 
-            if recipient.Claimed == True:
-                updateUser("Claimed", recipient)
-            else:
-                updateUser("Unclaimed", recipient)
+        if recipient.Claimed == True:
+            updateUser("Claimed", recipient)
+        else:
+            updateUser("Unclaimed", recipient)
 
-            updateUser("Claimed", self)
-            return True
+        updateUser("Claimed", self)
+        return True
 
 
 def initUser(id, username, email, password, isAdmin=False, isVerified=False, userRole="Student"):

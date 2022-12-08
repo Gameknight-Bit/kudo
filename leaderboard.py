@@ -5,6 +5,7 @@ from kudos import User as UserObj
 UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
 
 def updateDB():
+    global UserDB
     UserDB = TinyDB('datastore/Users.json', sort_keys=True, indent=4)
 
 def getTopPlayers(numUsers: int, type: str = "All-Time"):

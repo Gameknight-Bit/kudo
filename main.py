@@ -194,14 +194,17 @@ def userPage(userId):
         loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
 
         if 'success' in request.args:
-            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), Success = request.args["success"])
+            print(request.args["success"])
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), Success = str(request.args["success"]))
         else:
             return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus())
     
     return render_template("user.html", User=users, AbleToDonate=False)
 
-@app.route("/user/<userId>/give")
+@app.route("/user/<userId>/give", methods=["POST"])
 def givePage(userId):
+    print(request.form)
+
     user = kudos.getUsers("Claimed", id=userId)
     if len(user) > 0:
         user = user[0]
@@ -213,8 +216,11 @@ def givePage(userId):
     else:
         session['previousurl'] = '/user/'+userId+'/give'
         return redirect(url_for('login'))
+    num = request.form.get("NumberToSend")
+    if num == '':
+        num = 1
 
-    success = loggedinuser.giveKudos(user)
+    success = loggedinuser.giveKudos(user, int(num), str(request.form.get('KudosMessage')))
 
     return redirect(url_for(".userPage", userId=userId, success=success))
     #return render_template("user.html", User=user, AbleToDonate=loggedinuser.giveStatus(), Success = success)

@@ -16,9 +16,9 @@ hr {
 
 .img-border-line {
     border-top:#8e90a7 2px solid;
-    position: absolute;
+    position: relative;
     width: 100%;
-    top: 150px;
+    top: 100px;
 }
 
 .profile-large {
@@ -112,7 +112,7 @@ div.kudo-info {
 
 /* Confirmation Message DIV */
 .darken-screen {
-    display: block;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -155,6 +155,7 @@ hr.dashed{
 }
 
 .popup-info {
+    transition: 0.5s;
     padding-top: 15px;
     padding-left: 10px;
     text-align: left;
@@ -162,18 +163,6 @@ hr.dashed{
 
 .popup-confirm button {
     margin: 4px;
-}
-
-@media (max-width: 600px) {
-    .popup-confirm {
-        margin-left: 10%;
-        width: 80%;
-        margin-top: 5%;
-    }
-
-    .popup-confirm h2 {
-        font-size: 1.3em
-    }
 }
 
     /* Text Area Forms */
@@ -206,14 +195,22 @@ hr.dashed{
         box-shadow: 0 3px 0 0 rgb(145, 147, 170);
     }
 
-    .active-blue-textarea.md-form p.active {
-        color: rgb(145, 147, 170);
-        font-weight: bolder;
+@media (max-width: 600px) {
+    .popup-confirm {
+        margin-left: 10%;
+        width: 80%;
+        margin-top: 5%;
+    }
+    
+    .popup-confirm h2 {
+        font-size: 1.3em
     }
 
-    .active-blue-textarea.md-form textarea.md-textarea:focus:not([readonly]) + label {
-        color: rgb(78, 87, 184);
+    .blue-textarea {
+        justify-content: center;
+        text-align: center;
     }
+}
 
 
 /* Buggy Fixes */
