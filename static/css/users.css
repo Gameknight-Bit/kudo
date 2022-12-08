@@ -223,6 +223,7 @@ hr.dashed{
 .card {
     padding: 10px;
     background-color: #39393d;
+    box-shadow: 4px 3px 3px 1px rgba(57, 57, 61, 0.3);
     border: #8e90a7 4px solid;
     border-radius: 15px;
 }
@@ -233,10 +234,16 @@ hr.dashed{
 
 .card p, .card h5, .card h4 {
     color: white;
+    margin-bottom: 4px;
 }
 
 .card h5 {
-    font-size: 1.2em;
+    font-size: 1.3em;
+    margin-bottom: 8px;
+}
+
+.card label {
+    margin-bottom: 2px;
 }
 
 /* Buggy Fixes */

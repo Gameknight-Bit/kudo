@@ -62,6 +62,8 @@ def register():
         username = request.form['username'].encode('utf8').decode('utf8')
         if userid == "":
             userid = username.lower().replace(' ', '_')
+        else:
+            userid = userid.lower().replace(' ', '_')
         password = request.form['password'].encode('utf8').decode('utf8')
         passwordCheck = request.form['passwordCheck'].encode('utf8').decode('utf8')
         email = request.form['email'].encode('utf8').decode('utf8')
@@ -193,6 +195,7 @@ def userPage(userId):
         users = users[0]
     else:
         users = ""
+        return redirect(url_for("error", messages="User does not exist!", errorcode=404))
 
     pic = url_for('static', filename='/img/profilePics/Default.png')
     if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):

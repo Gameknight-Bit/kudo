@@ -148,7 +148,7 @@
                         <hr>
                         {% set UserLatestKudos = User.getLatestKudos(4) %}
                         {% if UserLatestKudos|length >= 2 %}
-                        <h5><u><b>Recent Kudos:</b></u></h5>
+                        <h5><u><b>Recently Received Kudos ⏰:</b></u></h5>
                         <div class="container"> <!-- Recent kudos got! -->
                             <div class="row">
                                 {% set inc = {"foo": 1} %}
@@ -162,19 +162,47 @@
                                         </b></h5>
                                         <hr>
                                         <p>Kudo Given by: <a href="/user/{{kud.GivenBy}}">@{{kud.GivenBy}}</a></p>
+                                        <p>Date & Time: <i>{{kud.TimeGiven|todate}}</i></p>
                                         {% if "Message" in kud.Metadata and kud.Metadata["Message"] != "" %}
-                                        <p><i>Message from User:</i></p>
-                                        <div class="clear-container">
-                                            {{kud.Metadata["Message"]}}
+                                        <hr>
+                                        <label for="Msg"><i>Message from User:</i></label>
+                                        <div id="Msg" class="clear-container">
+                                            <p>{{kud.Metadata["Message"]|truncate(200, False, end="...")}}</p>
                                         </div>
                                         {% endif %}
+                                        <p style="font-size: 0.6em; margin-bottom: 0; color: rgb(158, 158, 158);"><i>{{kud.ID}}</i></p>
                                     </div>
                                 </div>
                                 {% if inc.update({"foo": inc["foo"]+1}) %} {% endif %}
                                 {% endfor %}
                             </div>
-
                             {% if User.Kudos|length > 2 %}
+                            <div class="row">
+                                {% set inc = {"foo": 3} %}
+                                {% for kud in UserLatestKudos[2:4] %}
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card">
+                                        <h5><b>Kudos #{{inc["foo"]}}
+                                            {% if kud.Metadata["Event"] != "none" %}
+                                            {{kud.Metadata["Emoji"]}}
+                                            {% endif %}
+                                        </b></h5>
+                                        <hr>
+                                        <p>Kudo Given by: <a href="/user/{{kud.GivenBy}}">@{{kud.GivenBy}}</a></p>
+                                        <p>Date & Time: <i>{{kud.TimeGiven|todate}}</i></p>
+                                        {% if "Message" in kud.Metadata and kud.Metadata["Message"] != "" %}
+                                        <hr>
+                                        <label for="Msg"><i>Message from User:</i></label>
+                                        <div id="Msg" class="clear-container">
+                                            <p>{{kud.Metadata["Message"]|truncate(200, False, end="...")}}</p>
+                                        </div>
+                                        {% endif %}
+                                        <p style="font-size: 0.6em; margin-bottom: 0; color: rgb(158, 158, 158);"><i>{{kud.ID}}</i></p>
+                                    </div>
+                                </div>
+                                {% if inc.update({"foo": inc["foo"]+1}) %} {% endif %}
+                                {% endfor %}
+                            </div>
                             {% endif %}
                         </div>
                         {% endif %}
