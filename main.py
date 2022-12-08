@@ -185,6 +185,7 @@ def logout():
 def leaders():
     leaderboards = {}
     leaderboards["monthly"] = leaderboard.getTopPlayers(10, "Monthly")
+    leaderboards["all-time"] = leaderboard.getTopPlayers(10, "All-Time")
 
     return render_template("leaderboard.html", boards=leaderboards)
 

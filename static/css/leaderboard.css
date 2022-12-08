@@ -31,6 +31,10 @@ h1{
     padding: 10px 20px;
 }
 
+#all-time .all-time-text{
+    padding: 10px 20px;
+}
+
 hr.shortCenter, hr.short{
     border-top-color: antiquewhite;
 }

@@ -50,10 +50,58 @@
                 {% endfor %}
             </tbody>
         </table>
-        <h3>Rewards:</h3>
-        <p> - 1st Place: 100 Kudo Coin + 1st Place Badge</p>
-        <p> - 2nd Place: 50 Kudo Coin + 2nd Place Badge</p>
-        <p> - 3rd Place: 25 Kudo Coin + 3rd Place Badge</p>
+        <div class="clear-container">
+            <h3><u>Rewards:</u></h3>
+            <p><b> - 👑 1st Place:</b> 100 Kudo Coin + 1st Place Badge</p>
+            <p><b> - 🏆 2nd Place:</b> 50 Kudo Coin + 2nd Place Badge</p>
+            <p><b> - 🥇 3rd Place:</b> 25 Kudo Coin + 3rd Place Badge</p>
+            <p style="margin-top: 10px; font-size: 0.8em; color: rgb(149, 163, 179);"><i>Rewards Rewarded on <u>12/31/2022 @24:00</u></i></p>
+        </div>
+        <hr>
+    </div>
+</section>
+
+<section id="all-time">
+    <div class="all-time-text">
+        <h2 style="margin-bottom: 0px"><b>All-Time Leaderboard 🎇</b></h2>
+        <p class="light-text">(From Forever Ago)</p>
+        <hr class="short">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col"># Ranking</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Kudos Score</th>
+                    <th scope="col">Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for userIndex in range(boards["all-time"]|length) %}
+                <tr>
+                    {% set user = boards["all-time"][userIndex] %}
+                    <th scope="row">
+                        {% if userIndex == 0 %}
+                        👑
+                        {% elif userIndex == 1 %}
+                        🏆
+                        {% elif userIndex == 2 %}
+                        🥇
+                        {% endif %}
+                        {{ userIndex+1 }}</th>
+                    <td><a href="/user/{{ user.UserId }}">{{ user.Username }}</a></td>
+                    <td>{{ user.getKudosScore("All-Time") }}</td>
+                    <td>{{ user.Grade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="clear-container">
+            <h3><u>Rewards:</u></h3>
+            <p><b> - 👑 1st Place:</b> 100 Kudo Coin + 1st Place Badge</p>
+            <p><b> - 🏆 2nd Place:</b> 50 Kudo Coin + 2nd Place Badge</p>
+            <p><b> - 🥇 3rd Place:</b> 25 Kudo Coin + 3rd Place Badge</p>
+            <p style="margin-top: 10px; font-size: 0.8em; color: rgb(149, 163, 179);"><i>Rewards Rewarded on <u>12/31/2022 @24:00</u></i></p>
+        </div>
         <hr>
     </div>
 </section>
