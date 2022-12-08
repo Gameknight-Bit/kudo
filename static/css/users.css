@@ -60,8 +60,8 @@ div.kudo-info {
     padding: 10px;
 }
 
-.kudo-info p{
-    color: rgb(17, 17, 17);
+.kudo-info p, .kudo-info h3, .kudo-info h5{
+    color: rgb(54, 54, 54);
 }
 
 .clear-container {
@@ -214,6 +214,30 @@ hr.dashed{
     }
 }
 
+/*****  Kudos Cards!  *****/
+.col-lg-6 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.card {
+    padding: 10px;
+    background-color: #39393d;
+    border: #8e90a7 4px solid;
+    border-radius: 15px;
+}
+
+.card hr{
+    margin-bottom: 5px;
+}
+
+.card p, .card h5, .card h4 {
+    color: white;
+}
+
+.card h5 {
+    font-size: 1.2em;
+}
 
 /* Buggy Fixes */
 #recipeint {

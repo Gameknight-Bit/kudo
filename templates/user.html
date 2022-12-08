@@ -96,7 +96,7 @@
                                             var v = document.getElementById("popup-confirm")
 
                                             dv.style.display = box.checked ? "block": "none";
-                                            v.style.marginTop = box.checked ? "5%": "8%"
+                                            v.style.marginTop = box.checked ? "5%": "8%";
                                         }
 
                                         //Part for updating html to include message sending with kudos//
@@ -141,8 +141,43 @@
                     </div>
                 <div class="col-lg-7">
                     <div id="kudo-info" class="kudo-info">
-                        <p>Grade Level: {{User.Grade}}</p>
-                        <p></p>
+                        <h3><u><b>{{User.Username}}'s Kudos Info:</b></u></h3>
+                        <hr style="border-top: #8e90a7 3px solid">
+                        <p><b>Grade Level:</b> {{User.Grade}}</p>
+                        <p><b>Total Kudos Given:</b> 🙌 {{User.LastKudos["TotalGiven"]}}</p>
+                        <hr>
+                        {% set UserLatestKudos = User.getLatestKudos(4) %}
+                        {% if UserLatestKudos|length >= 2 %}
+                        <h5><u><b>Recent Kudos:</b></u></h5>
+                        <div class="container"> <!-- Recent kudos got! -->
+                            <div class="row">
+                                {% set inc = {"foo": 1} %}
+                                {% for kud in UserLatestKudos[:2] %}
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card">
+                                        <h5><b>Kudos #{{inc["foo"]}}
+                                            {% if kud.Metadata["Event"] != "none" %}
+                                            {{kud.Metadata["Emoji"]}}
+                                            {% endif %}
+                                        </b></h5>
+                                        <hr>
+                                        <p>Kudo Given by: <a href="/user/{{kud.GivenBy}}">@{{kud.GivenBy}}</a></p>
+                                        {% if "Message" in kud.Metadata and kud.Metadata["Message"] != "" %}
+                                        <p><i>Message from User:</i></p>
+                                        <div class="clear-container">
+                                            {{kud.Metadata["Message"]}}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if inc.update({"foo": inc["foo"]+1}) %} {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            {% if User.Kudos|length > 2 %}
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

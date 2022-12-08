@@ -3,6 +3,7 @@
 
 import bcrypt
 import time
+import math
 from datetime import datetime
 from uuid import uuid4 as uuid
 from tinydb import TinyDB, Query
@@ -142,6 +143,16 @@ class User():
                     arr.append(v)
 
             return KudoScoreCalc(arr)
+
+    def getLatestKudos(self, num: int = 1) -> list[Kudos]:
+        retLis = []
+        
+        for i in self.Kudos.values():
+            retLis.append(i)
+
+        retLis.sort(key= lambda k: k["TimeGiven"], reverse=True)
+
+        return retLis[:abs(num)]
 
     def giveStatus(self):
         print(self.KudoSettings)
