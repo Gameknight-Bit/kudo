@@ -129,7 +129,13 @@ class User():
 
     def getKudosScore(self, type: str = "All-Time"):
         if type == "All-Time":
-            return KudoScoreCalc(self.Kudos)
+            arr = []
+
+            for key, v in self.Kudos.items():
+                v = Kudos.fromDict(v)
+                arr.append(v)
+
+            return KudoScoreCalc(arr)
         elif type == "Monthly":
             arr = []
 
