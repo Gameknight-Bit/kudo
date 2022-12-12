@@ -191,7 +191,7 @@ def leaders():
 
 @app.route("/user/<userId>")
 def userPage(userId):
-    users = kudos.getUsers("Claimed", id=userId)
+    users = kudos.getUsers("Both", id=userId)
     if len(users) > 0:
         users = users[0]
     else:
@@ -212,6 +212,27 @@ def userPage(userId):
             return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), ProfilePic=pic)
     
     return render_template("user.html", User=users, AbleToDonate=False, ProfilePic=pic)
+
+@app.route("/user/<userId>/edit", methods=["GET", "POST"])
+def editPage(userId):
+    users = kudos.getUsers("Claimed", id=userId)
+    if len(users) > 0:
+        users = users[0]
+    else:
+        users = ""
+        return redirect(url_for("error", messages="User does not exist!", errorcode=404))
+
+    pic = url_for('static', filename='/img/profilePics/Default.png')
+    if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
+        pic = users.Misc["ProfilePicture"]
+
+    if 'loggedin' in session and session['loggedin'] == True:
+        if userId == session['id']:
+            return render_template("edit.html", User=users, ProfilePic=pic)
+        else:
+            redirect(url_for("userPage", userId=userId))
+    else:
+        return redirect(url_for("login"))
 
 @app.route("/user/<userId>/give", methods=["POST"])
 def givePage(userId):

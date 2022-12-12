@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Editing - {{ User.Username }}'s Profile{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">{% endblock %}
+
+{% block content %}
+
+<section id="profile-info"> <!-- Top section of settings -->
+
+    <div class="container">
+        <div class="row">
+            <div id="SettingsBars" class="col-lg-2"> <!-- Settings Bars -->
+                <div class="choose-bar active" id="General"><p>General</p></div>
+            </div> 
+
+            <div id="Settings" class="col-lg-10"> <!-- Settings Bars -->
+ 
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

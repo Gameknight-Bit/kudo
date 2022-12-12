@@ -1,0 +1,15 @@
+.choose-bar {
+    background-color: none;
+    border: 1px #8e90a7 solid;
+    border-radius: 10px;
+}
+
+.container {
+    margin: 2px;
+}
+
+#SettingsBars {
+    margin-left: 10px;
+    border-right: 2px #8e90a7 solid;
+    border-radius: 0px;
+}
