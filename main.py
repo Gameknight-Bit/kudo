@@ -230,7 +230,7 @@ def editPage(userId):
         if userId == session['id']:
             return render_template("edit.html", User=users, ProfilePic=pic)
         else:
-            redirect(url_for("userPage", userId=userId))
+            return redirect(url_for("userPage", userId=userId))
     else:
         return redirect(url_for("login"))
 

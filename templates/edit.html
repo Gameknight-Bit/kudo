@@ -2,7 +2,8 @@
 {% block title %}Editing - {{ User.Username }}'s Profile{% endblock %}
 
 {% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">{% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!-- ICONS -->{% endblock %}
 
 {% block content %}
 
@@ -10,17 +11,61 @@
 
     <div class="container">
         <div class="row">
-            <div id="SettingsBars" class="col-lg-2"> <!-- Settings Bars -->
-                <div class="choose-bar active" id="General"><p>General</p></div>
+            <div class="col-lg-3 SettingsBars"> <!-- Settings Bars -->
+                <div class="row" id="LittleProfile">
+                    <div id="col-sm-5 col-md-5">
+                        <img id="little-profile-img" src="{{session.pfpurl}}")>
+                    </div>
+                    <div id="col-sm-7 col-md-7">
+                        <h5>{{User.Username}}</h5>
+                        <p class="soft-text">Your Personal Account</p>
+                    </div>
+                </div>
+
+                <div id="Bars">
+                    <p style="text-align: center; color: #eaf4ff; font-size: 1.4em; margin-bottom: 1px;"><b>Settings</b></p>
+                    <hr style="border-top: #eaf4ff 2px solid;">
+                    <div class="choose-bar active" id="Public">
+                        <p><!--span class="material-icons md-12">settings</span--> 
+                        Public Profile</p>
+                    </div>
+                    <div class="choose-bar" id="Account"><p>Account</p></div>
+                </div>
             </div> 
 
-            <div id="Settings" class="col-lg-10"> <!-- Settings Bars -->
- 
-
+            <div class="col-lg-9" id="Settings"> <!-- Settings Bars  -->
+                <h3>Public Profile</h3>
+                <hr class="sep1">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <form class="form" method="post">
+                            <label for="name-input">Name</label>
+                            <input type="user" class="form-control" id="name-input" name="name-input" aria-describedby="name-input" value="{{User.Username}}">
+                            <small id="userHelp" class="form-text text-muted">Your name may appear on leaderboards or when donating kudos. You can change it at any time.</small>
+                            <br>
+                            <label for="name-input">Bio</label>
+                            <textarea class="md-textarea form-control" id="kudos-message" name="KudosMessage" rows="3" value = "{{User.Status}}">{{User.Status}}</textarea>
+                            <small id="userHelp" class="form-text text-muted">You can <b>@mention</b> other users to link others viewing your bio to them!</small>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <form class="form" method="post" enctype="multipart/form-data">
+                            <label for="upload">Profile picture</label><br><img id="edit-profile-img" src="{{session.pfpurl}}">
+                            <label for="upload-form" id="upload">
+                                <input type="file" class="form-control" name="upload-form" id="upload-form" aria-describedby="upload"/>
+                                Edit
+                            </label>
+                            <br>
+                            <small id="uploadHelp" class="form-text text-muted">Your profile picture will be shown to others and <u>will be sent to moderation!</u></small>
+                            <br>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
 </section>
 
+<script src="{{ url_for('static', filename='js/edit.js') }}"></script>
 {% endblock %}
