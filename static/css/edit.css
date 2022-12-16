@@ -1,3 +1,9 @@
+small {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+
 .choose-bar {
     margin: auto;
     background-color: #6d7199a8;
@@ -61,8 +67,8 @@
 }
 
 #little-profile-img {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border-radius: 100%;
 }
 
@@ -118,4 +124,19 @@ hr.sep1{
     width: auto;
     margin-right: 10px;
     margin-left: 0px;
+}
+
+hr.sep2{
+    border-top: #97a2ad4f solid 2px;
+    width: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#UserId.clear-container {
+    padding: 5px 5px;
+    border: 2px #8e90a75d solid;
+    border-radius: 5px;
+    margin-bottom: 8px;
 }

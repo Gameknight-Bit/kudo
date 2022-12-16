@@ -121,3 +121,18 @@ a:active {
 .clear-container p {
     margin-bottom: 0px;
 }
+
+/* a tags */
+#account-link{
+    color:#cce4ee;
+    transition: 0.15s;
+}
+
+#account-link:hover{
+    color:#73c8e9
+}
+
+/* text styling */
+.soft-text {
+    color:#cecece;
+}
