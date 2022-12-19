@@ -222,6 +222,8 @@ def editPage(userId):
         users = ""
         return redirect(url_for("error", messages="User does not exist!", errorcode=404))
 
+    #IMPLEMENT PICTURES SETTING AND ALSO SETTING OTHER SETTINGS!!!!
+
     pic = url_for('static', filename='/img/profilePics/Default.png')
     if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
         pic = users.Misc["ProfilePicture"]
