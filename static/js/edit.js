@@ -38,12 +38,20 @@ $(function(){ //Runs on startup
         ////////// Validate Img ////////
         var file = $('#upload-form')
         if (!isImage(file.val())){
-            return failValidation('Profile Pictures can only have extensions .jpg, .png, or .gif')
+            return failValidation('Profile Pictures can only have extensions .jpg, .png, or .gif');
         }
-
 
         ////// SUCCESS!!! //////
         alert('Valid File! Lets return true and send a post request to the server!')
+        const formData = new FormData();
+        formData.append('username', $('#name-input').val()); //Append UserName
+        formData.append('status', $('#kudos-message').val()); //Append StatusMessage
+        formData.append('file', file.val()); 
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/user/{{User.UserId}}/edit', true)
+        xhr.send(formData)
+
         return false;
     });
 });

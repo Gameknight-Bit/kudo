@@ -1,9 +1,16 @@
 # Imports #
 # if imports do not work try cmd 'pip install -r requirements.txt' #
 
-from flask import Flask, render_template, redirect, url_for, request, session
+import os
+
+from flask import Flask, render_template, redirect, url_for, request, session, abort
 import re
 import time
+
+#Werkzeug
+from werkzeug.utils import secure_filename
+#from flask_wtf import FlaskForm
+#implement flask_wtf!!!!
 
 #File Imports#
 from kudos import User
@@ -44,6 +51,11 @@ emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 app = Flask(__name__, static_url_path="/static") #Default behavior :)
 app.secret_key = 'reallysecretkeysmile'
+
+## CONFIG ##
+app.config['MAX_CONTENT_LENGTH'] = 1024*1024*10 #10MB file limit
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.bmp'] #Upload stuff
+app.config['UPLOAD_PATH'] = 'static/img/profilePics/customProfiles'
 
 @app.route("/") #Homepage
 def home():
@@ -223,6 +235,16 @@ def editPage(userId):
         return redirect(url_for("error", messages="User does not exist!", errorcode=404))
 
     #IMPLEMENT PICTURES SETTING AND ALSO SETTING OTHER SETTINGS!!!!
+    if request.method == 'POST' and 'loggedin' in session and session['loggedin'] == True:
+        if userId == session['id']:
+            if 'file' in request.form:
+                profile_file = request.form["file"]
+                filename = secure_filename(profile_file.filename)
+                if filename != "":
+                    file_ext = os.path.splitext(filename)[1]
+                    if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+                        abort(400)
+                    profile_file.save(os.path.join(app.config['UPLOAD_PATH'], secure_filename(users.UserId)+file_ext))
 
     pic = url_for('static', filename='/img/profilePics/Default.png')
     if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
