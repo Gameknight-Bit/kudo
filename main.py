@@ -208,7 +208,7 @@ def userPage(userId):
         users = users[0]
     else:
         users = ""
-        return redirect(url_for("error", messages="User does not exist!", errorcode=404))
+        return redirect(url_for("error", messages="User does not exist!", errorcode=404, urlLink="/"))
 
     pic = url_for('static', filename='/img/profilePics/Default.png')
     if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
@@ -232,7 +232,7 @@ def editPage(userId):
         users = users[0]
     else:
         users = ""
-        return redirect(url_for("error", messages="User does not exist!", errorcode=404))
+        return redirect(url_for("error", messages="User does not exist!", errorcode=404, urlLink="/"))
 
     #IMPLEMENT PICTURES SETTING AND ALSO SETTING OTHER SETTINGS!!!!
     if request.method == 'POST' and 'loggedin' in session and session['loggedin'] == True:
@@ -266,7 +266,7 @@ def givePage(userId):
     if len(user) > 0:
         user = user[0]
     else:
-        redirect(url_for('.error', messages="User with ID: "+str(userId)+" does NOT exist!", errorcode=404))
+        redirect(url_for('.error', messages="User with ID: "+str(userId)+" does NOT exist!", errorcode=404, urlLink="/"))
 
     if "loggedin" in session and session["loggedin"] == True:
         loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
@@ -287,7 +287,8 @@ def givePage(userId):
 def error():
     message = request.args['messages'] #Using redirect(url_for('.error', message, errorcode))
     errorcode = request.args['errorcode']
-    return render_template("error.html", Message=message, ErrorCode=errorcode)
+    linkurl = request.args['urlLink']
+    return render_template("error.html", Message=message, ErrorCode=errorcode, Link=linkurl)
 
 ############## JINJA2 FILTER STUFF :) #############################
 
