@@ -46,11 +46,28 @@ $(function(){ //Runs on startup
         const formData = new FormData();
         formData.append('username', $('#name-input').val()); //Append UserName
         formData.append('status', $('#kudos-message').val()); //Append StatusMessage
-        formData.append('file', file.val()); 
+        alert(file.prop('files')[0])
+        formData.append('file', file.prop('files')[0]); 
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/user/{{User.UserId}}/edit', true)
-        xhr.send(formData)
+        const requestOptions = {
+            headers: {
+                
+            },
+            mode: "no-cors",
+            method: "POST",
+            files: file.prop('files')[0],
+            body: formData
+        }
+
+        fetch("/user/"+userId+"/edit", requestOptions).then(
+            (response) => {
+                console.log(response.data)
+            }
+        )
+
+        /*const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/user/'+userId+'/edit', true)
+        xhr.send(formData)*/
 
         return false;
     });

@@ -232,19 +232,24 @@ def editPage(userId):
         users = users[0]
     else:
         users = ""
-        return redirect(url_for("error", messages="User does not exist!", errorcode=404, urlLink="/"))
+        return redirect(url_for("error", messages=str(users)+"User does not exist!", errorcode=404, urlLink="/"))
 
     #IMPLEMENT PICTURES SETTING AND ALSO SETTING OTHER SETTINGS!!!!
     if request.method == 'POST' and 'loggedin' in session and session['loggedin'] == True:
         if userId == session['id']:
-            if 'file' in request.form:
-                profile_file = request.form["file"]
+            print(request.files)
+            if 'file' in request.files:
+                profile_file = request.files["file"]
+                print(profile_file)
                 filename = secure_filename(profile_file.filename)
                 if filename != "":
                     file_ext = os.path.splitext(filename)[1]
                     if file_ext not in app.config['UPLOAD_EXTENSIONS']:
                         abort(400)
+                    print("saving")
                     profile_file.save(os.path.join(app.config['UPLOAD_PATH'], secure_filename(users.UserId)+file_ext))
+                    users.Misc["ProfilePicture"] = app.config['UPLOAD_PATH']+"/"+str(secure_filename(users.UserId)+file_ext)
+                    kudos.updateUser("Claimed", users)
 
     pic = url_for('static', filename='/img/profilePics/Default.png')
     if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
