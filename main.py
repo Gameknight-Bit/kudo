@@ -237,7 +237,9 @@ def editPage(userId):
     #IMPLEMENT PICTURES SETTING AND ALSO SETTING OTHER SETTINGS!!!!
     if request.method == 'POST' and 'loggedin' in session and session['loggedin'] == True:
         if userId == session['id']:
-            print(request.files)
+            users.Username = str(request.form["username"])
+            users.Status = str(request.form["status"])
+
             if 'file' in request.files:
                 profile_file = request.files["file"]
                 print(profile_file)
@@ -247,13 +249,17 @@ def editPage(userId):
                     if file_ext not in app.config['UPLOAD_EXTENSIONS']:
                         abort(400)
                     print("saving")
+                    if "ProfilePicture" in users.Misc:
+                        os.remove(users.Misc["ProfilePicture"][1:])
                     profile_file.save(os.path.join(app.config['UPLOAD_PATH'], secure_filename(users.UserId)+file_ext))
-                    users.Misc["ProfilePicture"] = app.config['UPLOAD_PATH']+"/"+str(secure_filename(users.UserId)+file_ext)
+                    users.Misc["ProfilePicture"] = "/"+app.config['UPLOAD_PATH']+"/"+str(secure_filename(users.UserId)+file_ext)
+                    session["pfpurl"] = "/"+app.config['UPLOAD_PATH']+"/"+str(secure_filename(users.UserId)+file_ext)
                     kudos.updateUser("Claimed", users)
 
     pic = url_for('static', filename='/img/profilePics/Default.png')
     if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
         pic = users.Misc["ProfilePicture"]
+        session["pfpurl"] = users.Misc["ProfilePicture"]
 
     if 'loggedin' in session and session['loggedin'] == True:
         if userId == session['id']:
