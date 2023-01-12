@@ -1,0 +1,258 @@
+{% extends "layout.html" %}
+{% block title %}{{ User.Username }}'s Profile{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">//CONFETTI!!!!!</script>{% endblock %}
+
+{% block content %}
+
+<section id="profile-info">
+    <hr class="img-border-line">
+    <div class="page-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <img class="profile-large" src="{{ ProfilePic }}">
+                    {% if User.Verified == True %}
+                        <img class="verification-ico" src="{{ url_for('static', filename='/img/Verified.png') }}">
+                    {% endif %}
+                    <h2><b> {{User.Username}} </b></h2>
+                    <p class="light-text"><i> @{{User.UserId}}</i></p>
+                    <p style="margin-bottom: 0px" class="light-text"><b><i>Status:</i></b></p>
+                    <div class="clear-container">
+                        <p>{{User.Status}}</p>
+                    </div>
+
+                    {% if session.id == User.UserId %}
+                        <button id="EditButton" type="button" class="btn btn-secondary btn-sm" onclick="window.location.href = '/user/{{ User.UserId }}/edit'"><b>Edit Profile</b></button>
+                    {% elif AbleToDonate != False %}
+                        <button id="KudoButton" type="button" class="btn btn-success btn-sm"><b>Give Kudos</b></button>
+                    {% endif %}
+
+                    <hr>
+
+                    <p><b>Joined: </b><i>{{ User.Misc["CreationDate"]|todate }}</i></p>
+
+                    <h5><b>Total Kudos Amount:</b> <i>{{User.Kudos|length}}</i> Kudos</h5>
+
+                    {% if AbleToDonate != False %}
+                        <div class="darken-screen">
+                            <div class="popup-confirm" id="popup-confirm">
+                                <form class="form-inline" action="/user/{{ User.UserId }}/give" method="post">
+                                    <h2><b>Are you sure you want to send Kudos? 👏</b></h2>
+                                    <hr class="dashed">
+                                    <div class="popup-info">
+                                        <h5><u><b>🧾Receipt Info:</b></u></h5> 
+                                        <p id="recipeint"><b>Recipient: </b>{{User.Username}} (@<i>{{User.UserId}}</i>)</p>
+                                        <div class="form-group">
+                                            <label for="NumberToSend">Number of Kudos to Send: </label>
+                                            {% if AbleToDonate == True %}
+                                                <input type="number" class="form-control" id="NumberToSend" name="NumberToSend" placeholder="1">
+                                            {% else %}
+                                                <select class="form-control" id="NumberToSend" name="NumberToSend">
+                                                    {% for i in range(AbleToDonate) %}
+                                                        <option>{{i + 1}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                        <label id="dateSent">Date Sent: </label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="showHideArea(this)">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Custom Message?
+                                            </label>
+                                        </div>
+                                        <div class="form-group blue-textarea active-blue-textarea" style="display: none;">
+                                            <p id="kudos-message-to-send" for="kudos-message">Message to Send:</p>
+                                            <textarea class="md-textarea form-control" id="kudos-message" name="KudosMessage" rows="2" value = ""></textarea>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="kudo-self-stats">
+                                        <h5><b>👀Your Kudos Stats:</b></h5> 
+                                        <p><b>Number of <u>Kudos</u> left after gift:</b> </p>
+                                    </div>
+                                    <hr>
+                                    <button id="Sending-Kudos" type="submit" class="btn btn-success">Send Kudos 👏</button>
+                                    <button id="Cancel-Transaction" type="button" class="btn btn-danger">Cancel 🗙</button>
+
+                                    <script>
+                                        //Part for updating Date Sent Feild//
+                                        n = new Date();
+                                        y = n.getFullYear();
+                                        m = n.getMonth() + 1;
+                                        d = n.getDate();
+                                        min = n.getMinutes()
+                                        if (min.toString().length != 2){
+                                            min = "0"+min.toString()
+                                        }
+                                        time = n.getHours()+":"+min;
+                                        document.getElementById("dateSent").innerHTML = "Date Sent: "+m+"/"+d+"/"+y+" "+time;
+
+                                        function showHideArea(box) {
+                                            var dv = document.getElementsByClassName("blue-textarea")[0];
+                                            var v = document.getElementById("popup-confirm")
+
+                                            dv.style.display = box.checked ? "block": "none";
+                                            v.style.marginTop = box.checked ? "5%": "8%";
+                                        }
+
+                                        //Part for updating html to include message sending with kudos//
+                                        $("textarea").on('focus', function(){
+                                            var msg = document.getElementById("kudos-message-to-send")
+                                            var txtmsg = document.getElementById("kudos-message")
+
+                                            msg.style.transition = "0.2s"
+                                            msg.style.color = "rgb(193, 194, 207)"
+                                            msg.style.fontWeight = "bold"
+                                            txtmsg.style.transition = "0.2s"
+                                            
+
+                                            txtmsg.style.marginTop = "16px";
+
+                                            msg.style.marginTop = "-0.55vh";
+                                            msg.style.fontSize = "0.8em";
+                                        })
+
+                                        $("textarea").on('blur', function(){
+                                            var msg = document.getElementById("kudos-message-to-send")
+                                            var txtmsg = document.getElementById("kudos-message")
+
+                                            if (txtmsg.value.trim() == "") {
+                                                document.getElementById("kudos-message").style.marginTop = "0px";
+
+                                                msg.style.fontSize = "1em";
+                                                msg.style.color = "rgb(223, 225, 250)"
+                                                msg.style.fontWeight = "100"
+                                                document.getElementById("kudos-message-to-send").style.marginTop = "5px";
+                                            }
+                                        })
+
+                                        $("#Cancel-Transaction").click(function(){
+                                            $(".darken-screen").css("display", "none");
+                                        })
+                                    </script>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                    </div>
+                <div class="col-lg-7">
+                    <div id="kudo-info" class="kudo-info">
+                        <h3><u><b>{{User.Username}}'s Kudos Info:</b></u></h3>
+                        <hr style="border-top: #8e90a7 3px solid">
+                        <p><b>Grade Level:</b> {{User.Grade}}</p>
+                        <p><b>Total Kudos Given:</b> 🙌 {{User.LastKudos["TotalGiven"]}}</p>
+                        <hr>
+                        {% set UserLatestKudos = User.getLatestKudos(4) %}
+                        {% if UserLatestKudos|length >= 2 %}
+                        <h5><u><b>Recently Received Kudos ⏰:</b></u></h5>
+                        <div class="container"> <!-- Recent kudos got! -->
+                            <div class="row">
+                                {% set inc = {"foo": 1} %}
+                                {% for kud in UserLatestKudos[:2] %}
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card">
+                                        <h5><b>Kudos #{{inc["foo"]}}
+                                            {% if kud.Metadata["Event"] != "none" %}
+                                            {{kud.Metadata["Emoji"]}}
+                                            {% endif %}
+                                        </b></h5>
+                                        <hr>
+                                        <p>Kudo Given by: <a href="/user/{{kud.GivenBy}}">@{{kud.GivenBy}}</a></p>
+                                        <p>Date & Time: <i>{{kud.TimeGiven|todate}}</i></p>
+                                        {% if "Message" in kud.Metadata and kud.Metadata["Message"] != "" %}
+                                        <hr>
+                                        <label for="Msg"><i>Message from User:</i></label>
+                                        <div id="Msg" class="clear-container">
+                                            <p>{{kud.Metadata["Message"]|truncate(200, False, end="...")}}</p>
+                                        </div>
+                                        {% endif %}
+                                        <p style="font-size: 0.6em; margin-bottom: 0; color: rgb(158, 158, 158);"><i>{{kud.ID}}</i></p>
+                                    </div>
+                                </div>
+                                {% if inc.update({"foo": inc["foo"]+1}) %} {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if User.Kudos|length > 2 %}
+                            <div class="row">
+                                {% set inc = {"foo": 3} %}
+                                {% for kud in UserLatestKudos[2:4] %}
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="card">
+                                        <h5><b>Kudos #{{inc["foo"]}}
+                                            {% if kud.Metadata["Event"] != "none" %}
+                                            {{kud.Metadata["Emoji"]}}
+                                            {% endif %}
+                                        </b></h5>
+                                        <hr>
+                                        <p>Kudo Given by: <a href="/user/{{kud.GivenBy}}">@{{kud.GivenBy}}</a></p>
+                                        <p>Date & Time: <i>{{kud.TimeGiven|todate}}</i></p>
+                                        {% if "Message" in kud.Metadata and kud.Metadata["Message"] != "" %}
+                                        <hr>
+                                        <label for="Msg"><i>Message from User:</i></label>
+                                        <div id="Msg" class="clear-container">
+                                            <p>{{kud.Metadata["Message"]|truncate(200, False, end="...")}}</p>
+                                        </div>
+                                        {% endif %}
+                                        <p style="font-size: 0.6em; margin-bottom: 0; color: rgb(158, 158, 158);"><i>{{kud.ID}}</i></p>
+                                    </div>
+                                </div>
+                                {% if inc.update({"foo": inc["foo"]+1}) %} {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript"> //Confirmation Message")
+    $("#KudoButton").click(function(){
+        $(".darken-screen").css("display", "block");
+    })
+
+    if ("{{Success}}" == "True"){
+        var myCanvas = document.createElement('canvas');
+        document.body.appendChild(myCanvas);
+        myCanvas.style.display = "block"
+        myCanvas.style.position = "fixed"
+        myCanvas.style.top = 0
+        myCanvas.style.left = 0
+        myCanvas.style.height = "100%"
+        myCanvas.style.width = "100%"
+
+        var myConfetti = confetti.create(myCanvas, {
+            resize: true,
+            useWorker: true
+        });
+        myConfetti({
+            particleCount: 200,
+            spread: 150,
+            colors: ["#419CFF", "#FFFFFF", "#C2C2C2", "#C0FFFC", "#56FF58", "#E48CFF"],
+            shapes: ["square"],
+            startVelocity: 70,
+            origin: {
+                y: 1
+            },
+            // any other options from the global
+            // confetti function
+        });
+
+        confetti();
+        setTimeout(() => {
+            confetti.reset();
+            setTimeout(() => {
+                myCanvas.style.display = "none"
+            }, 5000)
+        }, 500);
+    }
+</script>
+
+{% endblock %}
