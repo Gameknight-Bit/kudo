@@ -35,20 +35,23 @@ $(function(){ //Runs on startup
             return false;
         }
 
-        ////////// Validate Img ////////
-        var file = $('#upload-form')
-        if (!isImage(file.val())){
-            return failValidation('Profile Pictures can only have extensions .jpg, .png, or .gif');
-        }
-
         ////// SUCCESS!!! //////
-        alert('Valid File! Lets return true and send a post request to the server!')
+        //alert('Valid File! Lets return true and send a post request to the server!')
         const formData = new FormData();
         formData.append('username', $('#name-input').val()); //Append UserName
         formData.append('status', $('#kudos-message').val()); //Append StatusMessage
-        alert(file.prop('files')[0])
-        formData.append('file', file.prop('files')[0]); 
 
+        ////////// Validate Img ////////
+        var file = $('#upload-form')
+        if (!isImage(file.val())){
+            if (file.val() != "") {
+                return failValidation('Profile Pictures can only have extensions .jpg, .png, or .gif');
+            }
+        }
+        else {
+            //alert(file.prop('files')[0])
+            formData.append('file', file.prop('files')[0]); 
+        }   
         const requestOptions = {
             headers: {
                 
@@ -62,13 +65,12 @@ $(function(){ //Runs on startup
         fetch("/user/"+userId+"/edit", requestOptions).then(
             (response) => {
                 console.log(response.data)
+                location.reload() //Reloads page to show changes >:)
             }
         )
 
         /*const xhr = new XMLHttpRequest();
         xhr.open('POST', '/user/'+userId+'/edit', true)
         xhr.send(formData)*/
-
-        return false;
     });
 });

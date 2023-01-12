@@ -59,10 +59,14 @@
                             <textarea class="md-textarea form-control" id="kudos-message" name="KudosMessage" rows="3" value = "{{User.Status}}">{{User.Status}}</textarea>
                             <small id="userHelp" class="form-text text-muted">You can <b>@mention</b> other users to link others viewing your bio to them!</small>
 
+                            <label for="grade-input">Grade Level</label>
+                            <textarea class="md-textarea form-control" id="grade-message" name="GradeMessage" rows="3" value = "{{User.Grade}}">{{User.Grade}}</textarea>
+                            <small id="gradeHelp" class="form-text text-muted">Grade levels are not shown if you are a teacher</small>
+
                             <hr class="sep1">
                             <label for="UserId">User-Id:</label>
                             <div id="UserId" class="clear-container">
-                                <p>{{User.UserId}}</p>
+                                <p><i>{{User.UserId}}</i></p>
                             </div>
                             <small id="userHelp" class="form-text text-muted">Your userid cannot be changed.</small>
 
