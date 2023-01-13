@@ -1,0 +1,84 @@
+/* CSS Used for home.html */
+
+body {
+    padding-left: 10px;
+    padding-right: 10px;
+    background-image: url(../img/heroBack.png);
+    background-color: #292929;
+    background-size: 150%;
+    background-repeat: repeat-y;
+}
+
+/* Intro Section */
+#intro {
+    align-items: left;
+    text-align: left;
+    justify-content: center;
+    padding-top: 20vh;
+    padding-left: 5%;
+    padding-right: 5%
+}
+
+#intro h1 {
+    font-family: 'Alliance No.1', 'Ariel', sans-serif;
+    color: rgb(255, 255, 255);
+    font-size: 64px;
+    line-height: 68px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+#intro .container.overflow-hidden {
+    padding: 0;
+    margin-left: 0;
+    height: 70px;
+    overflow: hidden;
+}
+
+#textmove h1{
+    position: relative;
+    transition: 0.5s;
+}
+
+hr {
+    border-top-color: rgb(255, 255, 255) !important;
+}
+
+.navbar {
+    background: transparent;
+    border: transparent;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: #686868 2px;
+    border-style: solid;
+}
+
+#myNavbar a{
+    color: rgb(212, 212, 212);
+    font-size: 1.1em;
+}
+
+#myNavbar a:hover{
+    color: rgb(141, 141, 141);
+}
+
+#intro .btn-get-started {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 1px;
+    display: inline-block;
+    padding: 8px 28px;
+    border-radius: 50px;
+    transition: 0.5s;
+    margin: 10px;
+    border: 3px solid rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+  }
+  
+#intro .btn-get-started:hover {
+  font-style: bold;
+  color: rgb(31, 31, 31);
+  background: rgb(219, 219, 219);
+}

@@ -1,0 +1,270 @@
+body {
+    background-color: #36384b;
+}
+
+h1,h2,h3,h4,h5,p,label {
+    color: #eaf4ff;
+}
+
+hr {
+    border-top:#8e90a7 2px solid;
+    border-radius: 3px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
+.img-border-line {
+    border-top:#8e90a7 2px solid;
+    position: relative;
+    width: 100%;
+    top: 100px;
+}
+
+.profile-large {
+    border-radius: 100%;
+    border-style: solid;
+    border-color: #8e90a7;
+    border-width: 3px;
+    margin-bottom: 5px;
+    height: 320px;
+    width: 320px;
+    object-fit: cover;
+}
+
+.verification-ico {
+    border-radius: 100%;
+    width: 50px;
+    position: relative;
+    right: 70px;
+    top: 100px;
+    transition: 0.3s;
+}
+
+.verification-ico:hover {
+    transform: rotate(10deg);
+}
+
+#profile-info h2{
+    margin-bottom: 2px;
+}
+
+.light-text {
+    color: rgb(202, 202, 202);
+}
+
+div.kudo-info {
+    margin-top: 50px;
+    background-color: rgb(239, 240, 241);
+    border: 3px #8e90a7 solid;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.kudo-info p, .kudo-info h3, .kudo-info h5{
+    color: rgb(54, 54, 54);
+}
+
+.clear-container {
+    padding: 5px 5px;
+    border: 2px #8e90a7 solid;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.clear-container p {
+    margin-bottom: 0px;
+}
+
+@media (min-width: 600px) {
+    .page-container {
+        margin: 0px 150px;
+    }
+}
+
+.container {
+    width: 100%
+}
+
+#EditButton {
+    color: #a1a4c4;
+    background-color: #39393d;
+    border-color: #8e90a7;
+    border-radius: 5px;
+    width: 80%;
+    margin: 0% 10%;
+    margin-bottom: 20px;
+    transition: 0.5s;
+}
+
+#EditButton:hover{
+    background-color: #54545a;
+}
+
+#KudoButton {
+    border-radius: 5px;
+    width: 80%;
+    margin: 0% 10%;
+    margin-bottom: 20px;
+    transition: 0.5s;
+}
+
+#KudoButton:hover{
+    border-radius: 7px;
+}
+
+/* Confirmation Message DIV */
+.darken-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(36, 36, 36, 0.5);
+    z-index: 100;
+}
+
+.popup-confirm {
+    border-radius: 10px;
+    position: fixed;
+    top: 5%;
+    left: 0%;
+    margin-top: 8%;
+    margin-left: 25%;
+    width: 50%;
+    height: auto;
+    border: 3px solid rgb(145, 147, 170);
+    padding: 15px;
+    background-color:#36384b;
+    z-index: 101;
+    
+    text-align: center;
+}
+
+.popup-confirm h2 {
+    font-size: 1.9em
+}
+
+.form-control {
+    width: auto!important;
+}
+
+hr.dashed{
+    border-top-style: dashed;
+    border-radius: 0;
+    margin-top: 7px;
+    margin-bottom: 0px;
+}
+
+.popup-info {
+    transition: 0.5s;
+    padding-top: 15px;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.popup-confirm button {
+    margin: 4px;
+}
+
+    /* Text Area Forms */
+    .blue-textarea p{
+        position: absolute;
+        margin-top: 5px;
+        margin-left: 5px;
+        color: rgb(223, 225, 250);
+    }
+
+    .blue-textarea textarea {
+        transition: 0.1s;
+        background-color: #36384b;
+        color: rgb(223, 225, 250);
+        margin-bottom: 10px !important;
+        border-width: 0;
+        box-shadow: none;
+        border-radius: 0;
+        border-bottom: #787981 2px solid;
+        width: 70%!important;
+    }
+
+    .blue-textarea {
+        width: 100%!important;
+    }
+
+    .blue-textarea textarea.md-textarea:focus:not([readonly]) {
+        border-bottom: 1px solid rgb(145, 147, 170);
+        border-radius: 2px;
+        box-shadow: 0 3px 0 0 rgb(145, 147, 170);
+    }
+
+@media (max-width: 600px) {
+    .popup-confirm {
+        margin-left: 10%;
+        width: 80%;
+        margin-top: 5%;
+    }
+    
+    .popup-confirm h2 {
+        font-size: 1.3em
+    }
+
+    .blue-textarea {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+/*****  Kudos Cards!  *****/
+.col-lg-6 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.card {
+    padding: 10px;
+    background-color: #39393d;
+    box-shadow: 4px 3px 3px 1px rgba(57, 57, 61, 0.3);
+    border: #8e90a7 4px solid;
+    border-radius: 15px;
+}
+
+.card hr{
+    margin-bottom: 5px;
+}
+
+.card p, .card h5, .card h4 {
+    color: white;
+    margin-bottom: 4px;
+}
+
+.card h5 {
+    font-size: 1.3em;
+    margin-bottom: 8px;
+}
+
+.card label {
+    margin-bottom: 2px;
+}
+
+/* Buggy Fixes */
+#recipeint {
+    margin-bottom: 4px;
+}
+
+/* Error Page Stuff */
+.ErrorBox {
+    margin-right: 7%;
+    margin-left: 7%;
+    margin-top: 5%;
+    border:rgb(145, 147, 170) solid 2px;
+    border-radius: 10px;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+#errormsg hr{
+    width: 100%;
+}

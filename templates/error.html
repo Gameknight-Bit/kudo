@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Error {{ErrorCode}}{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!-- ICONS -->{% endblock %}
+
+
+{% block content %}
+<section id="errormsg">
+    <div class="ErrorBox">
+        <h2><b>Sorry, we hit a snag...</b></h2>
+        <hr>
+        <p style="margin-bottom: 5px"><b>Error Message:</b></p>
+        <div class="clear-container">
+            <h5><i>Error {{ErrorCode}}:</i> {{Message}}</h5>
+        </div>
+        <p class="light-text" style="margin-bottom: 10px">If this error occurs again, please contact an admin to issue a bug-fix</p>
+        <button class="btn btn-secondary" onclick="location.href='{{Link}}'">Return to Page</button>
+    </div>
+</section>
+
+{% endblock %}

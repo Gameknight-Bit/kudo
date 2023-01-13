@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block title %}Editing - {{ User.Username }}'s Profile{% endblock %}
+
+{% block head %}<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!-- ICONS -->{% endblock %}
+
+{% block content %}
+
+<section id="profile-info"> <!-- Top section of settings -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 SettingsBars"> <!-- Settings Bars -->
+                <div class="row" id="LittleProfile">
+                    <div class="col-xs-2 col-sm-2 col-md-3">
+                        <img id="little-profile-img" src="{{session.pfpurl}}")>
+                    </div>
+                    <div class="col-xs-10 col-sm-10 col-md-9">
+                        <h5 style="margin-bottom: 3px"><a id="account-link" href="/user/{{User.UserId}}">{{User.Username}}</a></h5>
+                        <p class="soft-text">Your Personal Account</p>
+                    </div>
+                </div>
+
+                <div id="Bars">
+                    <p style="text-align: center; color: #eaf4ff; font-size: 1.4em; margin-bottom: 1px;"><b>Settings</b></p>
+                    <hr style="border-top: #eaf4ff 2px solid;">
+                    <div class="choose-bar active" id="Public">
+                        <p><!--span class="material-icons md-12">settings</span--> 
+                        Public Profile</p>
+                    </div>
+                    <div class="choose-bar" id="Account"><p>Account</p></div>
+                    <div class="choose-bar" id="Appearance"><p>Appearance</p></div>
+                    <div class="choose-bar" id="Notifications"><p>Notifications</p></div>
+
+                    <hr class="sep2">
+                    <p style="color:#eaf4ff; margin-left: 15px; margin-top: 0px; margin-bottom: 5px;"><b>Access:</b></p>
+
+                    <div class="choose-bar" id="Email"><p>Emails</p></div>
+                    <div class="choose-bar" id="Password"><p>Password</p></div>
+
+                    <hr class="sep2">
+                    <div class="choose-bar" id="Dev-Settings"><p>Developer Settings</p></div>
+
+                </div>
+            </div> 
+
+            <div class="col-lg-9" id="Settings"> <!-- Settings Bars  -->
+                <form class="form" action="/gallery/create" method="post" id="form" enctype="multipart/form-data">
+                    <h3>Public Profile</h3>
+                    <hr class="sep1">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <label for="name-input">Name</label>
+                            <input type="user" class="form-control" id="name-input" name="name-input" aria-describedby="name-input" value="{{User.Username}}">
+                            <small id="userHelp" class="form-text text-muted">Your name may appear on leaderboards or when donating kudos. You can change it at any time.</small>
+
+                            <label for="name-input">Bio</label>
+                            <textarea class="md-textarea form-control" id="kudos-message" name="KudosMessage" rows="3" value = "{{User.Status}}">{{User.Status}}</textarea>
+                            <small id="userHelp" class="form-text text-muted">You can <b>@mention</b> other users to link others viewing your bio to them!</small>
+
+                            <label for="grade-input">Grade Level</label>
+                            <select class="form-control form-select" id="grade-level" name="GradeMessage" value = "{{User.Grade}}">
+                                <option value="N/A">N/A</option>
+                                <option value="7th Grade">7th Grade</option>
+                                <option value="8th Grade">8th Grade</option> 
+                                <option value="9th Grade">9th Grade</option> 
+                                <option value="10th Grade">10th Grade</option> 
+                                <option value="11th Grade">11th Grade</option> 
+                                <option value="12th Grade">12th Grade</option> 
+                                <option value="{{User.Grade}}" selected>{{User.Grade}}</option> 
+                            </select>
+                            <small id="gradeHelp" class="form-text text-muted">Grade levels are not shown if you are a teacher</small>
+
+                            <hr class="sep1">
+                            <label for="UserId">User-Id:</label>
+                            <div id="UserId" class="clear-container">
+                                <p><i>{{User.UserId}}</i></p>
+                            </div>
+                            <small id="userHelp" class="form-text text-muted">Your userid cannot be changed.</small>
+
+                            <label for="UserId">User-Id:</label>
+                            <div id="UserId" class="clear-container">
+                                <p>{{User.UserId}}</p>
+                            </div>
+                            <small id="userHelp" class="form-text text-muted">You can <b>@mention</b> other users to link others viewing your bio to them!</small>
+
+                            <hr class="sep1">
+                            <button id="submit-button" name="button" type="button" class="btn btn-success">Update Profile</button>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="upload">Profile picture</label><br><img id="edit-profile-img" src="{{ProfilePic}}">
+                            <label for="upload-form" id="upload">
+                                <input type="file" onchange = file_changed() class="form-control" name="upload-form" id="upload-form" aria-describedby="upload"/>
+                                Edit
+                            </label>
+                            <br>
+                            <small id="uploadHelp" class="form-text text-muted">Your profile picture will be shown to others and <u>will be sent to moderation!</u></small>
+                            <br>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+<script> const userId = "{{User.UserId}}"</script>
+<script src="{{ url_for('static', filename='js/edit.js') }}"></script>
+{% endblock %}

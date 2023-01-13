@@ -1,0 +1,149 @@
+small {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+
+.choose-bar {
+    margin: auto;
+    background-color: #6d7199a8;
+    border-radius: 10px;
+    text-align: left;
+    padding: 5px 0px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    transition: 0.5s;
+    width: 90%;
+    vertical-align: middle;
+}
+
+.choose-bar.active{
+    background-color: #36384b;
+    border: 3px #8e90a7 solid;
+    border-radius: 10px;
+    margin-bottom: 0px;
+    padding: 5px 0px;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    transition: 0.5s;
+    width: 90%;
+    vertical-align: middle;
+}
+
+.choose-bar p {
+    margin-bottom: 0px;
+}
+
+.container {
+    color:black
+}
+
+@media (min-width: 992px){
+    .container {
+        max-width: 1200px;
+    }
+}
+
+.SettingsBars {
+    border-right: 2px #666880 solid;
+    border-radius: 0px;
+}
+
+#Bars {
+    background-color: #4d5069;
+    padding: 15px 6px;
+    padding-bottom: 10px;
+    padding-top: 7px;
+    /*border: 2px #272727 solid;*/
+    border-radius: 5px;
+    align-items: center;
+}
+
+/*Little Profile*/
+#LittleProfile.row{
+    margin: 0;
+    margin-bottom: 10px;
+    z-index: 2;
+}
+
+#little-profile-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+/*Settings*/
+#Settings {
+    padding-top: 70px;
+    padding-left: 30px;
+}
+
+#Settings h3, #Settings label{
+    font-weight: 100;
+    color: #b8c6d4;
+    margin-bottom: 5px;
+}
+
+#Settings label{
+    font-weight: 600;
+}
+
+#Settings input, #Settings textarea, #Settings select{
+    width: 100%!important;
+    background-color: #262730;
+    color: #ced8e0;
+    border: #adbac7 1px solid;
+    border-radius: 6px;
+}
+
+#Settings select {
+    width: 40% !important;
+    padding-left: 6px;
+}
+
+#edit-profile-img {
+    width: 220px;
+    height: 220px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+#Settings #upload{
+    display: block;
+    position: absolute;
+    width: 70px!important;
+    top: 200px;
+    background-color: #2f313d;
+    color: #ced8e0;
+    border: #adbac7 2px solid;
+    padding-left: 7px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+hr.sep1{
+    border-top: #97a2ad4f solid 3px;
+    width: auto;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+hr.sep2{
+    border-top: #97a2ad4f solid 2px;
+    width: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#UserId.clear-container {
+    padding: 5px 5px;
+    border: 2px #8e90a75d solid;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}

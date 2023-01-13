@@ -1,12 +1,24 @@
 # Imports #
 # if imports do not work try cmd 'pip install -r requirements.txt' #
-from flask import Flask, render_template, redirect, url_for, request, session
+
+import os
+
+from flask import Flask, render_template, redirect, url_for, request, session, abort
 import re
 import time
 
+#Werkzeug
+from werkzeug.utils import secure_filename
+#from flask_wtf import FlaskForm
+#implement flask_wtf!!!!
+
 #File Imports#
-import DatastoreService
 from kudos import User
+import kudos
+
+import datetime
+
+import leaderboard
 
 ########### Constants ############
 MAX_USERNAME_LEN = 70 #Usernames cannot be over 70 characters long
@@ -17,7 +29,7 @@ SESSION_TIMEOUT = 1*3600 #Number of hours *3600
 ##################################
 
 # Init #
-users = DatastoreService.GetDatastore("Users")
+#users = DatastoreService.GetDatastore("Users")
 # Datastore Key:
 # UserId: {
 #   "UserId": UserId,
@@ -40,17 +52,30 @@ emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 app = Flask(__name__, static_url_path="/static") #Default behavior :)
 app.secret_key = 'reallysecretkeysmile'
 
+## CONFIG ##
+app.config['MAX_CONTENT_LENGTH'] = 1024*1024*10 #10MB file limit
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif', '.bmp'] #Upload stuff
+app.config['UPLOAD_PATH'] = 'static/img/profilePics/customProfiles'
+
 @app.route("/") #Homepage
 def home():
     return render_template("home.html")
 
 @app.route("/api/register/", methods=["GET", "POST"]) #Register Account
 def register():
+    if 'loggedin' in session and session['loggedin'] == True:
+        return redirect(url_for('home'))
+
     message = '' #output message
 
     if request.method == 'POST' and 'userid' in request.form and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'passwordCheck' in request.form:
         userid = request.form['userid'].encode('utf8').decode('utf8')
+
         username = request.form['username'].encode('utf8').decode('utf8')
+        if userid == "":
+            userid = username.lower().replace(' ', '_')
+        else:
+            userid = userid.lower().replace(' ', '_')
         password = request.form['password'].encode('utf8').decode('utf8')
         passwordCheck = request.form['passwordCheck'].encode('utf8').decode('utf8')
         email = request.form['email'].encode('utf8').decode('utf8')
@@ -68,33 +93,49 @@ def register():
         elif len(username) > MAX_USERNAME_LEN:
             message = 'Username chracters need to be less than '+str(MAX_USERNAME_LEN)+'!'
         else:
-            if users.CheckAsync(userid):
-                acc = User.fromDict(users.GetAsync(userid))
+            if len(kudos.getUsers("Both", id = userid)) != 0 :
+                acc = kudos.getUsers("Both", id = userid)[0]
                 if acc.Claimed == True:
-                    message = "Account already exists!"
+                    message = "Account userid already exists!"
                 elif acc.Email != email:
                     message = "Email does not match with linking account!"
                 else:
-                    message = "Sending confirmation email to '"+email+"'. <br>Please check your <b>email</b> and type the numbers sent below..."
+                    message = "Sending confirmation email to '"+email+"'. Please check your email and type the numbers sent below..."
                     #is claiming account to be theirs
                     #need confirmation from e-mail
                     # VERIFIES ACCOUNT AUTOMATICALLY (Can start sending kudos automatically) #
                     
+                    return redirect(url_for('confirm'))
             else:
                 #New UNVERIFIED ACCOUNT# (Limits: cannot post pfp, cannot send kudos, cannot be placed on leaderboards)
                 #Needs to send verification request#
-                acc = User(userid, username, email, password)
-                acc.setAttributes({"Misc": {"CreationDate": int(time.time())}})
-                users.SetAsync(userid, acc.toDict())
+                acc = kudos.initUser(userid, username, email, password, False, False)
+                acc.setAttributes({"Claimed": True, "Misc": {"CreationDate": int(time.time())}})
+                kudos.setUser("Claimed", acc)
+
+                return redirect(url_for('login', msg="Account Sucessfully Created! Please Login...", err="False"))
     elif request.method == "POST":
         message = "Please fill out the form!"
 
     return render_template('register.html', msg=message)
 
+@app.route("/api/confirmation/", methods=["GET", "POST"])
+def confirm(): #Confirmation code enter
+    if 'loggedin' in session and session['loggedin'] == True:
+        return redirect(url_for('home'))
+    message = ""
+    if request.method == 'POST' and 'numbers1' in request.form:
+        numbers = [request.form['numbers1'], request.form['numbers2'], request.form['numbers3'], request.form['numbers4'], request.form['numbers5'], request.form['numbers6']]
+
+    return render_template('confirmation.html')
 
 @app.route("/api/login/", methods=["GET", "POST"]) #Login
 def login():
-    message = ''
+    if 'loggedin' in session and session['loggedin'] == True:
+        return redirect(url_for('home'))
+
+    message = request.args.get('msg') or ''
+    err = request.args.get('err') or 'True'
     print(request.form)
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
         username = request.form['username']
@@ -106,22 +147,33 @@ def login():
 
         acc = None
 
-        if users.CheckAsync(username):
-            acc = User.fromDict(users.GetAsync(username))
+        if len(kudos.getUsers("Claimed", username=username)) != 0:
+            acc = kudos.getUsers("Claimed", username=username)[0]
         else:
-            for x in users.GetAsDict().values():
-                if x['UserId'] == username or x["Username"] == username or x["Email"] == username:
-                    acc = User.fromDict(x)
-                    break
+            acc = kudos.getUsers("Claimed", id=username, username=username, email=username)
+            if len(acc) != 0:
+                acc = acc[0]
+            else:
+                acc = None
             
         if acc == None:
-            message = "Incorrect username"
+            message = "Username does not exist..."
         else:
             if acc.checkPass(password):
                 session['loggedin'] = True
                 session['id'] = acc.UserId
                 session['username'] = acc.Username
                 session['lastupdate'] = int(time.time())
+                session['pfpurl'] = url_for('static', filename='/img/profilePics/Default.png')
+                if ("ProfilePicture" in acc.Misc) and (acc.Misc["ProfilePicture"] != "Default.png"):
+                    session['pfpurl'] = acc.Misc["ProfilePicture"]
+
+                if 'previousurl' in session:
+                    if session['previousurl'] != "":
+                        urlname = session['previousurl']
+                        session.pop('previousurl')
+                        return redirect(urlname)
+
                 return redirect(url_for('home'))
             else:
                 message = "Incorrect password or username"
@@ -129,7 +181,7 @@ def login():
         message = "Please fill out the form!"
 
     print(message)
-    return render_template('login.html', msg=message)
+    return render_template('login.html', msg=message, err=err)
 
 @app.route("/api/logout/")
 def logout():
@@ -137,8 +189,129 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     session.pop('lastupdate', None)
+    session.pop('pfpurl', None)
 
     return redirect(url_for('login'))
+
+@app.route("/leaderboard")
+def leaders():
+    leaderboards = {}
+    leaderboards["monthly"] = leaderboard.getTopPlayers(10, "Monthly")
+    leaderboards["all-time"] = leaderboard.getTopPlayers(10, "All-Time")
+
+    return render_template("leaderboard.html", boards=leaderboards)
+
+@app.route("/user/<userId>")
+def userPage(userId):
+    users = kudos.getUsers("Both", id=userId)
+    if len(users) > 0:
+        users = users[0]
+    else:
+        users = ""
+        return redirect(url_for("error", messages="User does not exist!", errorcode=404, urlLink="/"))
+
+    pic = url_for('static', filename='/img/profilePics/Default.png')
+    if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
+        pic = users.Misc["ProfilePicture"]
+
+    if 'loggedin' in session and session['loggedin'] == True:
+        loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
+
+        if 'success' in request.args:
+            print(request.args["success"])
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), ProfilePic=pic, Success = str(request.args["success"]))
+        else:
+            return render_template("user.html", User=users, AbleToDonate=loggedinuser.giveStatus(), ProfilePic=pic)
+    
+    return render_template("user.html", User=users, AbleToDonate=False, ProfilePic=pic)
+
+@app.route("/user/<userId>/edit", methods=["GET", "POST"])
+def editPage(userId):
+    users = kudos.getUsers("Claimed", id=userId)
+    if len(users) > 0:
+        users = users[0]
+    else:
+        users = ""
+        return redirect(url_for("error", messages=str(users)+"User does not exist!", errorcode=404, urlLink="/"))
+
+    #IMPLEMENT PICTURES SETTING AND ALSO SETTING OTHER SETTINGS!!!!
+    if request.method == 'POST' and 'loggedin' in session and session['loggedin'] == True:
+        if userId == session['id']:
+            users.Username = str(request.form["username"])
+            users.Status = str(request.form["status"])
+            users.Grade = str(request.form["grade"])
+
+            print(request.form)
+
+            if 'file' in request.files:
+                profile_file = request.files["file"]
+                print(profile_file)
+                filename = secure_filename(profile_file.filename)
+                if filename != "":
+                    file_ext = os.path.splitext(filename)[1]
+                    if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+                        abort(400)
+                    print("saving")
+                    if "ProfilePicture" in users.Misc:
+                        os.remove(users.Misc["ProfilePicture"][1:])
+                    profile_file.save(os.path.join(app.config['UPLOAD_PATH'], secure_filename(users.UserId)+file_ext))
+                    users.Misc["ProfilePicture"] = "/"+app.config['UPLOAD_PATH']+"/"+str(secure_filename(users.UserId)+file_ext)
+                    session["pfpurl"] = "/"+app.config['UPLOAD_PATH']+"/"+str(secure_filename(users.UserId)+file_ext)
+            kudos.updateUser("Claimed", users)
+
+    pic = url_for('static', filename='/img/profilePics/Default.png')
+    if ("ProfilePicture" in users.Misc) and (users.Misc["ProfilePicture"] != "Default.png"):
+        pic = users.Misc["ProfilePicture"]
+        session["pfpurl"] = users.Misc["ProfilePicture"]
+
+    if 'loggedin' in session and session['loggedin'] == True:
+        if userId == session['id']:
+            return render_template("edit.html", User=users, ProfilePic=pic)
+        else:
+            return redirect(url_for("userPage", userId=userId))
+    else:
+        return redirect(url_for("login"))
+
+@app.route("/user/<userId>/give", methods=["POST"])
+def givePage(userId):
+    print(request.form)
+
+    user = kudos.getUsers("Claimed", id=userId)
+    if len(user) > 0:
+        user = user[0]
+    else:
+        redirect(url_for('.error', messages="User with ID: "+str(userId)+" does NOT exist!", errorcode=404, urlLink="/"))
+
+    if "loggedin" in session and session["loggedin"] == True:
+        loggedinuser = kudos.getUsers("Claimed", id=session['id'])[0]
+    else:
+        session['previousurl'] = '/user/'+userId+'/give'
+        return redirect(url_for('login'))
+    num = request.form.get("NumberToSend")
+    if num == '':
+        num = 1
+
+    success = loggedinuser.giveKudos(user, int(num), str(request.form.get('KudosMessage')))
+
+    return redirect(url_for(".userPage", userId=userId, success=success))
+    #return render_template("user.html", User=user, AbleToDonate=loggedinuser.giveStatus(), Success = success)
+
+###### Error Handling Pages ########
+@app.route("/error")
+def error():
+    message = request.args['messages'] #Using redirect(url_for('.error', message, errorcode))
+    errorcode = request.args['errorcode']
+    linkurl = request.args['urlLink']
+    return render_template("error.html", Message=message, ErrorCode=errorcode, Link=linkurl)
+
+############## JINJA2 FILTER STUFF :) #############################
+
+#Used for converting unix time into dates
+@app.template_filter('todate')
+def _jinja2_filter_datetime(date, fmt=None):
+    print(date)
+    dt = datetime.datetime.fromtimestamp(date)
+    return dt.strftime("%B %d, %Y")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True) #change when deploying :)!

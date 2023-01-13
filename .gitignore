@@ -130,3 +130,5 @@ dmypy.json
 
 # Some Special Things to Ignore for this project
 datastore/
+
+static/img/profilePics/customProfiles/
