@@ -95,12 +95,14 @@ a:active {
 
 #profile-img {
     max-width: 2.9em;
-    width: 100px;
+    min-width:100px;
+    width: auto;
     height: auto;
     border-radius: 100%;
     margin-right: 10px;
     transition: 0.09s;
     border: solid white 0px;
+    /*object-fit: cover;*/
 }
 
 #profile-img:hover{

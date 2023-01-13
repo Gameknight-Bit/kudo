@@ -29,6 +29,7 @@ hr {
     margin-bottom: 5px;
     height: 320px;
     width: 320px;
+    object-fit: cover;
 }
 
 .verification-ico {

@@ -239,6 +239,7 @@ def editPage(userId):
         if userId == session['id']:
             users.Username = str(request.form["username"])
             users.Status = str(request.form["status"])
+            users.Grade = str(request.form["grade"])
 
             print(request.form)
 

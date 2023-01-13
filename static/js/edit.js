@@ -40,6 +40,7 @@ $(function(){ //Runs on startup
         const formData = new FormData();
         formData.append('username', $('#name-input').val()); //Append UserName
         formData.append('status', $('#kudos-message').val()); //Append StatusMessage
+        formData.append('grade', $('#grade-level').val())
 
         ////////// Validate Img ////////
         var file = $('#upload-form')

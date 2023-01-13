@@ -70,6 +70,7 @@ small {
     width: 55px;
     height: 55px;
     border-radius: 100%;
+    object-fit: cover;
 }
 
 /*Settings*/
@@ -88,7 +89,7 @@ small {
     font-weight: 600;
 }
 
-#Settings input, #Settings textarea{
+#Settings input, #Settings textarea, #Settings select{
     width: 100%!important;
     background-color: #262730;
     color: #ced8e0;
@@ -96,10 +97,16 @@ small {
     border-radius: 6px;
 }
 
+#Settings select {
+    width: 40% !important;
+    padding-left: 6px;
+}
+
 #edit-profile-img {
     width: 220px;
     height: 220px;
     border-radius: 100%;
+    object-fit: cover;
 }
 
 input[type="file"] {
